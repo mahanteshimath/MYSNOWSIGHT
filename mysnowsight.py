@@ -1,11 +1,28 @@
 import streamlit as st
 import pandas as pd
+import snowflake.connector
 import time
-from snowflake.connector import connect
-from snowflake.connector.connection import SnowflakeConnection
 from concurrent.futures import ThreadPoolExecutor
 
 
+# Create a Snowflake connection function
+def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
+    try:
+        conn = snowflake.connector.connect(
+            account=account,
+            role=role,
+            warehouse=warehouse,
+            database=database,
+            schema=schema,
+            user=user,
+            password=password,
+            client_session_keep_alive=True
+        )
+        st.success("Connected to Snowflake successfully!")
+        st.balloons()
+    except Exception as e:
+        st.error(f"Error connecting to Snowflake: {str(e)}")    
+    return conn
 
 # Function to execute queries in parallel
 def execute_queries(queries):
@@ -17,7 +34,7 @@ def execute_queries(queries):
 
 # Function to execute a single query
 def execute_single_query(query):
-    connection = connect(**st.secrets["snowflake"], client_session_keep_alive=True)
+    connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
     cursor = connection.cursor()
     start_time = time.time()
 
@@ -32,16 +49,34 @@ def execute_single_query(query):
         cursor.close()
         connection.close()
 
-
 # Streamlit UI
+st.title("My Snowsight")
+
+# Sidebar for Snowflake credentials
+st.sidebar.header("Snowflake Credentials")
+account = st.sidebar.text_input("Account")
+role = st.sidebar.text_input("Role")
+warehouse = st.sidebar.text_input("Warehouse")
+database = st.sidebar.text_input("Database")
+schema = st.sidebar.text_input("Schema")
+user = st.sidebar.text_input("User")
+password = st.sidebar.text_input("Password", type="password")
+
+
+
+# Connect button
 def main():
-    st.title("Type queries ; seperated to execute all in paralell")
+    if st.sidebar.button("Connect"):
+        #st.sidebar.set_visible(False)
+        connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+        #st.success("Connected to Snowflake successfully!")
+    #st.title("Input queries separated by ; to execute all in parallel")
 
     # Add link to your YouTube channel
-    st.markdown("[Visit my YouTube channe for more details](https://bit.ly/atozaboutdata)")
+    st.markdown("[Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
 
     # Text area to input queries
-    queries = st.text_area("Enter your queries (separated by ;) :", height=200)
+    queries = st.text_area("Input queries separated by ; to execute all in parallel",height=200)
     query_list = [q.strip() for q in queries.split(';') if q.strip()]
 
     if st.button("Execute Queries"):
@@ -56,6 +91,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-TTL = 24 * 60 * 60
