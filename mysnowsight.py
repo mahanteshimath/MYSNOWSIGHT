@@ -4,7 +4,6 @@ import snowflake.connector
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-
 # Create a Snowflake connection function
 def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
     try:
@@ -29,8 +28,6 @@ def execute_queries(queries):
     with ThreadPoolExecutor(max_workers=len(queries)) as executor:
         results = list(executor.map(execute_single_query, queries))
     return results
-
-
 
 # Function to execute a single query
 def execute_single_query(query):
@@ -62,18 +59,14 @@ schema = st.sidebar.text_input("Schema")
 user = st.sidebar.text_input("User")
 password = st.sidebar.text_input("Password", type="password")
 
-
-
 # Connect button
 def main():
     if st.sidebar.button("Connect"):
         #st.sidebar.set_visible(False)
         connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-        #st.success("Connected to Snowflake successfully!")
-    #st.title("Input queries separated by ; to execute all in parallel")
 
-    # Add link to your YouTube channel
-    st.markdown("[Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
+    #link to  YouTube channel
+    st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
 
     # Text area to input queries
     queries = st.text_area("Input queries separated by ; to execute all in parallel",height=200)
