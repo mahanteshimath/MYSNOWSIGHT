@@ -1,2 +1,5 @@
 # MYSNOWSIGHT
-This is streamlit app where use to play with snowflake
+
+## What's special about this app?
+You can execute parallel queries in a single query window.
+
