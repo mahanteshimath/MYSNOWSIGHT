@@ -7,5 +7,5 @@ You can execute parallel queries in a single query window.
 ### Prerequisites
 
   1. [App link](https://mysnowsight.streamlit.app/)
-  2. https://github.com/mahanteshimath/MYSNOWSIGHT/blob/main/MySnowsight.gif
+(https://github.com/mahanteshimath/MYSNOWSIGHT/blob/main/MySnowsight.gif)
 
