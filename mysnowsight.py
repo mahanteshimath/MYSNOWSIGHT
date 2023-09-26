@@ -4,6 +4,13 @@ import snowflake.connector
 import time
 from concurrent.futures import ThreadPoolExecutor
 
+st.set_page_config(
+  page_title="Convert youtube content to pdf",
+  page_icon="  ",
+  layout="wide",
+  initial_sidebar_state="expanded",
+) 
+
 # Create a Snowflake connection function
 def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
     try:
@@ -47,26 +54,26 @@ def execute_single_query(query):
         connection.close()
 
 # Streamlit UI
-st.title("My Snowsight")
+
 
 # Sidebar for Snowflake credentials
-
-st.sidebar.header("Snowflake Credentials")
-#st.sidebar("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
-account = st.sidebar.text_input("Account")
-role = st.sidebar.text_input("Role")
-warehouse = st.sidebar.text_input("Warehouse")
-database = st.sidebar.text_input("Database")
-schema = st.sidebar.text_input("Schema")
-user = st.sidebar.text_input("User")
-password = st.sidebar.text_input("Password", type="password")
+with st.sidebar:
+    st.markdown("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
+    st.sidebar.header("Snowflake Credentials")
+    account = st.sidebar.text_input("Account")
+    role = st.sidebar.text_input("Role")
+    warehouse = st.sidebar.text_input("Warehouse")
+    database = st.sidebar.text_input("Database")
+    schema = st.sidebar.text_input("Schema")
+    user = st.sidebar.text_input("User")
+    password = st.sidebar.text_input("Password", type="password")
 
 # Connect button
 def main():
     if st.sidebar.button("Connect"):
         #st.sidebar.set_visible(False)
         connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-
+    st.title("My Snowsight")
     #link to  YouTube channel
     st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
 
