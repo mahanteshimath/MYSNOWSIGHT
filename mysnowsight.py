@@ -52,7 +52,7 @@ st.title("My Snowsight")
 # Sidebar for Snowflake credentials
 
 st.sidebar.header("Snowflake Credentials")
-st.sidebar("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
+#st.sidebar("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
 account = st.sidebar.text_input("Account")
 role = st.sidebar.text_input("Role")
 warehouse = st.sidebar.text_input("Warehouse")
