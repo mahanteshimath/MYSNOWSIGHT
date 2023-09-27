@@ -5,7 +5,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 st.set_page_config(
-  page_title="Convert youtube content to pdf",
+  page_title="MYSNOWSIGHT",
   page_icon="  ",
   layout="wide",
   initial_sidebar_state="expanded",
