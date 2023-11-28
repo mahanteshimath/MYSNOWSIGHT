@@ -75,7 +75,7 @@ def main():
         connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
     st.title("My Snowsight")
     #link to  YouTube channel
-    st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://yt.openinapp.co/atozaboutdata)")
+    st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
 
     # Text area to input queries
     queries = st.text_area("Input queries separated by ; to execute all in parallel",height=200)
