@@ -178,9 +178,9 @@ with tab2:
 
                             if st.button('Save to Snowflake'):
                                 try:
-                                    success, nchunks, nrows, _ = write_pandas(conn, data, table_name)
+                                    write_pandas(conn, data, table_name)
                                     
-                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
+                                    #st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
                                 except Exception as e:
                                     st.error(f'Error: {str(e)}')
                         else:
