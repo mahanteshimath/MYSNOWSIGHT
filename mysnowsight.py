@@ -167,7 +167,7 @@ with tab2:
                         data = pd.read_excel(file) if file_extension.lower() in ['xls', 'xlsx'] else pd.read_csv(file)
 
                         st.subheader('Preview of Uploaded Data')
-                        prnt(data)
+                        print(data)
                         data.columns
                         st.write(data.head())
 
