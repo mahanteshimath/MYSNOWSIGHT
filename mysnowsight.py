@@ -48,24 +48,6 @@ def create_snowflake_connection(account, role, warehouse, database, schema, user
     return conn
 
 with tab1:
-                # # Create a Snowflake connection function
-                # def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
-                #     try:
-                #         conn = snowflake.connector.connect(
-                #             account=account,
-                #             role=role,
-                #             warehouse=warehouse,
-                #             database=database,
-                #             schema=schema,
-                #             user=user,
-                #             password=password,
-                #             client_session_keep_alive=True
-                #         )
-                #         st.success("Connected to Snowflake successfully!")
-                #         st.balloons()
-                #     except Exception as e:
-                #         st.error(f"Error connecting to Snowflake: {str(e)}")    
-                #     return conn
 
                 # Function to execute queries in parallel
                 def execute_queries(queries):
@@ -120,38 +102,6 @@ with tab1:
 
                 if __name__ == "__main__":
                     main()
-
-
-                # # Adding a footer
-                # footer="""<style>
-                # a:link , a:visited{
-                # color: blue;
-                # background-color: transparent;
-                # text-decoration: underline;
-                # }
-
-                # a:hover,  a:active {
-                # color: red;
-                # background-color: transparent;
-                # text-decoration: underline;
-                # }
-
-                # .footer {
-                # position: fixed;
-                # left: 0;
-                # bottom: 0;
-                # width: 100%;
-                # background-color: white;
-                # color: black;
-                # text-align: center;
-                # }
-                # </style>
-                # <div class="footer">
-                # <p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://bit.ly/atozaboutdata" target="_blank">MAHANTESH HIREMATH</a></p>
-                # </div>
-                # """
-                # st.markdown(footer,unsafe_allow_html=True)
-
 with tab2:
             def main():
                 st.title('Upload Files to Snowflake')
@@ -167,8 +117,6 @@ with tab2:
                         data = pd.read_excel(file) if file_extension.lower() in ['xls', 'xlsx'] else pd.read_csv(file)
 
                         st.subheader('Preview of Uploaded Data')
-                        print(data)
-                        data.columns
                         st.write(data.head())
 
                         # Save data to Snowflake
@@ -183,7 +131,7 @@ with tab2:
                                     data_f=pd.DataFrame(data)
                                     success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
                                     
-                                    #st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
+                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
                                 except Exception as e:
                                     st.error(f'Error: {str(e)}')
                         else:
