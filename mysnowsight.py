@@ -169,7 +169,7 @@ with tab2:
                         st.write(data.head())
 
                         # Save data to Snowflake
-                        conn = create_snowflake_connection()
+                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                         if conn:
                             st.info('Connected to Snowflake!')
 
