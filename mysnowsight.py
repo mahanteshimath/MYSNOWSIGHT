@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import snowflake.connector
+from snowflake.connector.pandas_tools import write_pandas
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -177,8 +178,9 @@ with tab2:
 
                             if st.button('Save to Snowflake'):
                                 try:
-                                    conn.write_pandas(data, "TEST_LOAD", auto_create_table=True, table_type="temp")
-                                    st.success('Data successfully saved to Snowflake!')
+                                    success, nchunks, nrows, _ = write_pandas(conn, data, 'table_name')
+                                    
+                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
                                 except Exception as e:
                                     st.error(f'Error: {str(e)}')
                         else:
