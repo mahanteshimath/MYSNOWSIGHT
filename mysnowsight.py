@@ -13,6 +13,18 @@ st.set_page_config(
 
 tab1, tab2 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE"])
 
+# Sidebar for Snowflake credentials
+with st.sidebar:
+    st.markdown("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
+    st.sidebar.header("Snowflake Credentials")
+    account = st.sidebar.text_input("Account")
+    role = st.sidebar.text_input("Role")
+    warehouse = st.sidebar.text_input("Warehouse")
+    database = st.sidebar.text_input("Database")
+    schema = st.sidebar.text_input("Schema")
+    user = st.sidebar.text_input("User")
+    password = st.sidebar.text_input("Password", type="password")	
+
 
 # Create a Snowflake connection function
 def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
@@ -27,7 +39,8 @@ def create_snowflake_connection(account, role, warehouse, database, schema, user
             password=password,
             client_session_keep_alive=True
         )
-        st.success("Connected to Snowflake successfully!")
+        st.toast("Connection to Snowflake successfully!", icon='🎉')
+        time.sleep(.5)
         st.balloons()
     except Exception as e:
         st.error(f"Error connecting to Snowflake: {str(e)}")    
@@ -79,17 +92,7 @@ with tab1:
                 # Streamlit UI
 
 
-                # Sidebar for Snowflake credentials
-                with st.sidebar:
-                    st.markdown("[![Foo](https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-48.png)](https://www.linkedin.com/in/mahantesh-hiremath/) Connect me.")   
-                    st.sidebar.header("Snowflake Credentials")
-                    account = st.sidebar.text_input("Account")
-                    role = st.sidebar.text_input("Role")
-                    warehouse = st.sidebar.text_input("Warehouse")
-                    database = st.sidebar.text_input("Database")
-                    schema = st.sidebar.text_input("Schema")
-                    user = st.sidebar.text_input("User")
-                    password = st.sidebar.text_input("Password", type="password")
+
 
                 # Connect button
                 def main():
