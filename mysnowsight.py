@@ -181,7 +181,7 @@ with tab2:
                             if st.button('Save to Snowflake'):
                                 try:
                                     data_f=pd.DataFrame(data)
-                                   success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name ,database=database,schema=schema,auto_create_table=True,overwrite=True)
+                                    success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name ,database=database,schema=schema,auto_create_table=True,overwrite=True)
                                     
                                     #st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
                                 except Exception as e:
