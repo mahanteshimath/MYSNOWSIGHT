@@ -104,10 +104,7 @@ with tab1:
                     main()
 with tab2:
             def main():
-                st.title('Upload Files to Snowflake')
-
-                # File upload section
-                st.header('Upload your file')
+                st.title('Upload File to Snowflake')
                 file = st.file_uploader('Upload file', type=['xls', 'xlsx', 'csv', 'txt'])
 
                 if file is not None:
