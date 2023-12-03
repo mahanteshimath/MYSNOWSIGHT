@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import snowflake.connector
-import snowflake.snowpark
 from snowflake.snowpark.session import Session
 from snowflake.connector.pandas_tools import write_pandas
 import time
