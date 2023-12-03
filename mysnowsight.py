@@ -178,7 +178,7 @@ with tab2:
 
                             if st.button('Save to Snowflake'):
                                 try:
-                                    data=pandas.DataFrame([(912.767574,152.0645808,663.389122,47.03847883), (912.767574,152.0645808,663.389122,47.03847883)], columns=['A', 'B','C','D'])
+                                    data=pd.DataFrame([(912.767574,152.0645808,663.389122,47.03847883), (912.767574,152.0645808,663.389122,47.03847883)], columns=['A', 'B','C','D'])
                                     write_pandas(conn, data, table_name)
                                     
                                     #st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
