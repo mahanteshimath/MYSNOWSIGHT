@@ -105,6 +105,7 @@ with tab1:
 with tab2:
             def main():
                 st.title('Upload File to Snowflake')
+                st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
                 file = st.file_uploader('Upload file', type=['xls', 'xlsx', 'csv', 'txt'])
 
                 if file is not None:
@@ -138,6 +139,7 @@ with tab2:
                 main()
 with tab3:
             def main():
+                st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
                 st.title('Document AI: Upload invoices and ask question')
                 
 
