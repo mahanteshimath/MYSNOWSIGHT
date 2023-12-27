@@ -207,28 +207,28 @@ with tab3:
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
-                            conn1=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                            if conn1:
-                                st.info('Connected to Snowflake!')
-                                
-                                st.write(data_to_save.head())
-
-                                table_name = st.text_input('Enter table name in Snowflake to store responses')
-
-                                if st.button('Save to Snowflake'):
-                                    try:
-                                        #response=get_gemini_response(input_prompt,image_data,input)
-                                        # Assuming 'prompt' and 'response' are columns in the Snowflake table
-                                        #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                        success, nchunks, nrows, _ = write_pandas(conn=conn1, df=DF, table_name=table_name,
-                                                                                database=database, schema=schema,
-                                                                                auto_create_table=True)
-
-                                        st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
-                                    except Exception as e:
-                                        st.error(f'Error: {str(e)}')
-                            else:
-                                st.error('Unable to connect to Snowflake. Please check your credentials.')
+                      conn1=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                      if conn1:
+                          st.info('Connected to Snowflake!')
+                          
+                          st.write(data_to_save.head())
+    
+                          table_name = st.text_input('Enter table name in Snowflake to store responses')
+    
+                          if st.button('Save to Snowflake'):
+                              try:
+                                  #response=get_gemini_response(input_prompt,image_data,input)
+                                  # Assuming 'prompt' and 'response' are columns in the Snowflake table
+                                  #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
+                                  success, nchunks, nrows, _ = write_pandas(conn=conn1, df=DF, table_name=table_name,
+                                                                          database=database, schema=schema,
+                                                                          auto_create_table=True)
+    
+                                  st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
+                              except Exception as e:
+                                  st.error(f'Error: {str(e)}')
+                      else:
+                          st.error('Unable to connect to Snowflake. Please check your credentials.')
           
                 
                 
