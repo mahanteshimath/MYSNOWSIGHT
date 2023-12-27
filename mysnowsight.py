@@ -183,7 +183,7 @@ with tab3:
                         genai.configure(api_key=google_api_key)  
                         st.header("Invoice reader Application")
                         input=st.text_input("Ask about invoice: ",key="input")
-                        submit=st.button("Submit", key='', label_visibility=False)
+                        submit=st.button("Submit")
                         input_prompt = """
                                     You are an expert in understanding invoices.
                                     You will receive input images or PDF as invoices &
