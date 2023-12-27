@@ -196,12 +196,13 @@ with tab3:
                             st.subheader("Answer: ")
                             st.write(response)
                             current_timestamp = pd.Timestamp.now()
-                            st.write(uploaded_file)
+                            st.subheader("data frame: ")
+                            st.write(uploaded_file.name)
                             st.write(input)
                             st.write(response)
                             st.write(current_timestamp)
 
-                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
+                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
