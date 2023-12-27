@@ -203,6 +203,7 @@ with tab3:
 
                             if st.button('Save to Snowflake'):
                                 try:
+                                    response=get_gemini_response(input_prompt,image_data,input)
                                     # Assuming 'prompt' and 'response' are columns in the Snowflake table
                                     data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
                                     success, nchunks, nrows, _ = write_pandas(conn=conn, df=data_to_save, table_name=table_name,
