@@ -10,7 +10,6 @@ from PIL import Image
 import google.generativeai as genai
 from concurrent.futures import ThreadPoolExecutor
 
-
 st.set_page_config(
   page_title="MYSNOWSIGHT",
   page_icon="  ",
@@ -35,7 +34,6 @@ with st.sidebar:
 
 # Create a Snowflake connection function
 def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
-    global conn
     try:
         conn = snowflake.connector.connect(
             account=account,
@@ -148,7 +146,7 @@ with tab2:
             if __name__ == '__main__':
                 main()
 with tab3:
-        def main():
+            def main():
                 def get_gemini_response(input,image,prompt):
                     model = genai.GenerativeModel('gemini-pro-vision')
                     response = model.generate_content([input,image[0],prompt])
@@ -173,80 +171,33 @@ with tab3:
                 st.title('Document AI: Upload invoices and ask question')
                 left, right= st.columns(2)
                 with right:        
-                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png"])
+                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png", "pdf"])
                         image=""   
                         if uploaded_file is not None:
                             image = Image.open(uploaded_file)
                             st.image(image, caption="Uploaded Image.", use_column_width=True)
                 with left:
-                            google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
-                            genai.configure(api_key=google_api_key)  
-                            st.header("Invoice reader Application")
-                            input=st.text_input("Ask about invoice: ",key="input")
-                            submit=st.button("Submit")
-                            input_prompt = """
-                                        You are an expert in understanding invoices.
-                                        You will receive input images or PDF as invoices &
-                                        you will have to answer questions based on the input image
-                                        """
+                        google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
+                        genai.configure(api_key=google_api_key)  
+                        st.header("Invoice reader Application")
+                        input=st.text_input("Ask about invoice: ",key="input")
+                        submit=st.button("Submit")
+                        input_prompt = """
+                                    You are an expert in understanding invoices.
+                                    You will receive input images or PDF as invoices &
+                                    you will have to answer questions based on the input image
+                                    """
 
-                            if submit:
-                                image_data = input_image_setup(uploaded_file)
-                                response=get_gemini_response(input_prompt,image_data,input)
-                                st.subheader("Answer: ")
-                                st.write(response)
-                                current_timestamp = pd.Timestamp.now()
-                                st.subheader("data frame: ")
-                                st.write(uploaded_file.name)
-                                st.write(input)
-                                st.write(response)
-                                st.write(current_timestamp)
-
-                                data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
-                                DF=pd.DataFrame(data_to_save)
-                                st.subheader('Preview of Uploaded Data')
-                                st.write(data_to_save.head())
-                                # Pushing response and prompt to Snowflake
-                                # success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
-                                #                                                     database=database, schema=schema,
-                                #                                                     auto_create_table=True)
-                                create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                            if conn:
-                                    st.info('Connected to Snowflake!')
-                                    
-                                    # st.write(data_to_save.head())
-                
-                                    table_name = st.text_input('Enter table name in Snowflake to store responses')
-                
-                                    if st.button('Save to Snowflake'):
-                                        try:
-                                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
-                                
-                                            DF=pd.DataFrame(data_to_save)
-
-                                            st.subheader("data frame: ")
-                                            st.write(uploaded_file.name)
-                                            st.write(input)
-                                            st.write(response)
-                                            st.write(current_timestamp)
-                                            #response=get_gemini_response(input_prompt,image_data,input)
-                                            # Assuming 'prompt' and 'response' are columns in the Snowflake table
-                                            #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                            success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
-                                                                                    database=database, schema=schema,
-                                                                                    auto_create_table=True)
-                
-                                            st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
-                                        except Exception as e:
-                                            st.error(f'Error: {str(e)}')
-                            else:
-                                    st.error('Unable to connect to Snowflake. Please check your credentials.')
-          
+                        if submit:
+                            image_data = input_image_setup(uploaded_file)
+                            response=get_gemini_response(input_prompt,image_data,input)
+                            st.subheader("Answer: ")
+                            st.write(response)          
                 
                 
 
-        if __name__ == '__main__':
-            main()
+            if __name__ == '__main__':
+                main()
                
  
                 # Adding a footer
