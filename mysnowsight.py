@@ -195,7 +195,7 @@ with tab3:
                             response=get_gemini_response(input_prompt,image_data,input)
                             st.subheader("Answer: ")
                             st.write(response)
-                            current_timestamp = time.datetime.now()
+                            current_timestamp = pd.Timestamp.now()
                             data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
