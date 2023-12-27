@@ -203,6 +203,7 @@ with tab3:
                             # create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                         if create_snowflake_connection(account, role, warehouse, database, schema, user, password):
                             st.info('Connected to Snowflake!')
+                            conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                             st.write(data_to_save.head())
 
                             table_name = st.text_input('Enter table name in Snowflake to store responses')
