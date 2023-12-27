@@ -12,7 +12,7 @@ st.set_page_config(
   initial_sidebar_state="expanded",
 ) 
 
-tab1, tab2 ,tab3 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI"])
+tab1, tab2, tab3 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI"])
 
 # Sidebar for Snowflake credentials
 with st.sidebar:
