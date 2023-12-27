@@ -207,8 +207,8 @@ with tab3:
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
-                      conn1=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                      if conn1:
+                conn1=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                if conn1:
                           st.info('Connected to Snowflake!')
                           
                           st.write(data_to_save.head())
@@ -227,7 +227,7 @@ with tab3:
                                   st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
                               except Exception as e:
                                   st.error(f'Error: {str(e)}')
-                      else:
+                else:
                           st.error('Unable to connect to Snowflake. Please check your credentials.')
           
                 
