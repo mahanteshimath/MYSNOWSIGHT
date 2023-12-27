@@ -193,8 +193,8 @@ with tab3:
                             response=get_gemini_response(input_prompt,image_data,input)
                             st.subheader("Answer: ")
                             st.write(response)
-                            current_timestamp = pd.Timestamp.now()  # Correct usage of datetime module
-                            date_time = time.fromtimestamp(current_timestamp)
+                            # current_timestamp = pd.Timestamp.now()  # Correct usage of datetime module
+                            date_time =time.time() 
 
                         # Dataframe creation with file details, question, response, and timestamp
                             data_to_save = pd.DataFrame({
