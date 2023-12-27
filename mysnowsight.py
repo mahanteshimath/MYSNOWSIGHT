@@ -183,7 +183,7 @@ with tab3:
                         genai.configure(api_key=google_api_key)  
                         st.header("Invoice reader Application")
                         input=st.text_input("Ask about invoice: ",key="input")
-                        submit=st.button("Submit")
+                        submit=st.button("Submit", key='', label_visibility=False)
                         input_prompt = """
                                     You are an expert in understanding invoices.
                                     You will receive input images or PDF as invoices &
@@ -203,6 +203,7 @@ with tab3:
                             st.write(current_timestamp)
 
                             data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
+                            DF=pd.DataFrame(data_to_save)
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
@@ -219,7 +220,7 @@ with tab3:
                                         #response=get_gemini_response(input_prompt,image_data,input)
                                         # Assuming 'prompt' and 'response' are columns in the Snowflake table
                                         #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                        success, nchunks, nrows, _ = write_pandas(conn=conn1, df=data_to_save, table_name=table_name,
+                                        success, nchunks, nrows, _ = write_pandas(conn=conn1, df=DF, table_name=table_name,
                                                                                 database=database, schema=schema,
                                                                                 auto_create_table=True)
 
