@@ -200,9 +200,10 @@ with tab3:
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
-                            conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                        if conn:
+                            # create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                        if create_snowflake_connection(account, role, warehouse, database, schema, user, password):
                             st.info('Connected to Snowflake!')
+                            st.write(data_to_save.head())
 
                             table_name = st.text_input('Enter table name in Snowflake to store responses')
 
