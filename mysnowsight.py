@@ -192,7 +192,18 @@ with tab3:
                             image_data = input_image_setup(uploaded_file)
                             response=get_gemini_response(input_prompt,image_data,input)
                             st.subheader("Answer: ")
-                            st.write(response)          
+                            st.write(response)
+                            current_timestamp = pd.datetime.now()  # Correct usage of datetime module
+
+                        # Dataframe creation with file details, question, response, and timestamp
+                            data_to_save = pd.DataFrame({
+                                'FILENAME': [uploaded_file.name if uploaded_file else None],
+                                'QUESTION': [input],
+                                'RESPONSE': [response],
+                                'TIMESTAMP': [current_timestamp]
+                            })
+                            st.subheader('Preview of Uploaded Data')
+                            st.write(data_to_save.head())          
                 
                 
 
