@@ -3,6 +3,7 @@ import pandas as pd
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
 import time
+from datetime import datetime
 import os
 import pathlib
 import textwrap
@@ -194,7 +195,7 @@ with tab3:
                             st.subheader("Answer: ")
                             st.write(response)
                             # current_timestamp = pd.Timestamp.now()  # Correct usage of datetime module
-                            date_time =time.time() 
+                            date_time =datetime.fromtimestamp(time.time()) 
 
                         # Dataframe creation with file details, question, response, and timestamp
                             data_to_save = pd.DataFrame({
