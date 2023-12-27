@@ -138,7 +138,7 @@ with tab2:
                 main()
 with tab3:
             def main():
-                St.title('Document AI: Upload invoices and ask question')
+                st.title('Document AI: Upload invoices and ask question')
                 
 
             if __name__ == '__main__':
