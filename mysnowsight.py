@@ -203,11 +203,14 @@ with tab3:
                                 st.write(current_timestamp)
 
                                 data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
-                                
+                                DF=pd.DataFrame(data_to_save)
                                 st.subheader('Preview of Uploaded Data')
                                 st.write(data_to_save.head())
                                 # Pushing response and prompt to Snowflake
-                            conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                                # success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
+                                #                                                     database=database, schema=schema,
+                                #                                                     auto_create_table=True)
+                                create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                             if conn:
                                     st.info('Connected to Snowflake!')
                                     
@@ -217,7 +220,15 @@ with tab3:
                 
                                     if st.button('Save to Snowflake'):
                                         try:
+                                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
+                                
                                             DF=pd.DataFrame(data_to_save)
+
+                                            st.subheader("data frame: ")
+                                            st.write(uploaded_file.name)
+                                            st.write(input)
+                                            st.write(response)
+                                            st.write(current_timestamp)
                                             #response=get_gemini_response(input_prompt,image_data,input)
                                             # Assuming 'prompt' and 'response' are columns in the Snowflake table
                                             #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
