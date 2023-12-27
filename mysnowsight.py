@@ -211,7 +211,7 @@ with tab3:
                             if conn:
                                     st.info('Connected to Snowflake!')
                                     
-                                    st.write(data_to_save.head())
+                                    # st.write(data_to_save.head())
                 
                                     table_name = st.text_input('Enter table name in Snowflake to store responses')
                 
@@ -234,7 +234,7 @@ with tab3:
                 
 
         if __name__ == '__main__':
-                main()
+            main()
                
  
                 # Adding a footer
