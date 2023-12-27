@@ -204,6 +204,8 @@ with tab3:
                             })
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
+                            table_name='INVOICE_DATA'
+                            write_pandas(conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password),df=data_to_save,table_name=table_name,database=database,schema=schema,auto_create_table=True)
 
                             # Save data to Snowflake
                         # conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
