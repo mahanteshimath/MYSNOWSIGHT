@@ -85,7 +85,7 @@ with tab1:
                     st.title("My Snowsight")
                     #link to  YouTube channel
                     # st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
-                    st.warning('<p style="color: yellow;">👉🎥 <a href="https://bit.ly/atozaboutdata">🎥 Visit my YouTube channel for more details</a></p>', unsafe_allow_html=True)
+                    st.markdown('<p style="color: yellow;">👉 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥 Visit my YouTube channel for more details</a></p>', unsafe_allow_html=True)
 
 
                     # Text area to input queries
