@@ -177,7 +177,7 @@ with tab3:
                             image = Image.open(uploaded_file)
                             st.image(image, caption="Uploaded Image.", use_column_width=True)
                 with left:
-                        google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
+                        google_api_key = st.text_input("INPUT GOOGLE_API_KEY",key="google_api_key")
                         genai.configure(api_key=google_api_key)  
                         st.header("Invoice reader Application")
                         input=st.text_input("Ask about invoice: ",key="input")
@@ -203,7 +203,25 @@ with tab3:
                                 'TIMESTAMP': [current_timestamp]
                             })
                             st.subheader('Preview of Uploaded Data')
-                            st.write(data_to_save.head())          
+                            st.write(data_to_save.head())
+
+                            # Save data to Snowflake
+                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                        if conn:
+                            st.info('Connected to Snowflake!')
+
+                            table_name = st.text_input('Enter table name in Snowflake')
+
+                            if st.button('Save to Snowflake'):
+                                try:
+                                    data_f=pd.DataFrame(data_to_save)
+                                    success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
+                                    
+                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
+                                except Exception as e:
+                                    st.error(f'Error: {str(e)}')
+                        else:
+                            st.error('Unable to connect to Snowflake. Please check your credentials.')          
                 
                 
 
