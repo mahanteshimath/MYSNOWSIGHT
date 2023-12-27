@@ -138,35 +138,8 @@ with tab2:
                 main()
 with tab3:
             def main():
-                st.title('Upload File to Snowflake')
-                file = st.file_uploader('Upload file', type=['xls', 'xlsx', 'csv', 'txt'])
-
-                if file is not None:
-                    # Read the file
-                    file_extension = file.name.split('.')[-1]
-                    if file_extension.lower() in ['xls', 'xlsx', 'csv', 'txt']:
-                        data = pd.read_excel(file) if file_extension.lower() in ['xls', 'xlsx'] else pd.read_csv(file)
-
-                        st.subheader('Preview of Uploaded Data')
-                        st.write(data.head())
-
-                        # Save data to Snowflake
-                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                        if conn:
-                            st.info('Connected to Snowflake!')
-
-                            table_name = st.text_input('Enter table name in Snowflake')
-
-                            if st.button('Save to Snowflake'):
-                                try:
-                                    data_f=pd.DataFrame(data)
-                                    success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
-                                    
-                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
-                                except Exception as e:
-                                    st.error(f'Error: {str(e)}')
-                        else:
-                            st.error('Unable to connect to Snowflake. Please check your credentials.')
+                St.title('Document AI: Upload invoices and ask question')
+                
 
             if __name__ == '__main__':
                 main()
