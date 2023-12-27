@@ -203,7 +203,7 @@ with tab3:
                                 st.write(current_timestamp)
 
                                 data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
-                                DF=pd.DataFrame(data_to_save)
+                                
                                 st.subheader('Preview of Uploaded Data')
                                 st.write(data_to_save.head())
                                 # Pushing response and prompt to Snowflake
@@ -217,6 +217,7 @@ with tab3:
                 
                                     if st.button('Save to Snowflake'):
                                         try:
+                                            DF=pd.DataFrame(data_to_save)
                                             #response=get_gemini_response(input_prompt,image_data,input)
                                             # Assuming 'prompt' and 'response' are columns in the Snowflake table
                                             #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
