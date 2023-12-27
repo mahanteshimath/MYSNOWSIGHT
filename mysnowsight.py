@@ -3,6 +3,11 @@ import pandas as pd
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
 import time
+import os
+import pathlib
+import textwrap
+from PIL import Image
+# import google.generativeai as genai
 from concurrent.futures import ThreadPoolExecutor
 
 st.set_page_config(
@@ -142,9 +147,14 @@ with tab2:
                 main()
 with tab3:
             def main():
-                # st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
                 st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                 st.title('Document AI: Upload invoices and ask question')
+                row_input = st.columns((2,1,2,1))
+                with row_input[0]:
+                    google_api_key = st.text_input("INPUT GOOGLE_API_KEY")        
+                    with row_input[2]:
+                        history= st.file_uploader('Viewing History', type=['csv'])
+                
                 
 
             if __name__ == '__main__':
@@ -170,8 +180,8 @@ position: fixed;
 left: 0;
 bottom: 0;
 width: 100%;
-background-color: white;
-color: black;
+background-color: blue;
+color: white;
 text-align: center;
 }
 </style>
