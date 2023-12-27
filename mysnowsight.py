@@ -171,7 +171,7 @@ with tab3:
                 st.title('Document AI: Upload invoices and ask question')
                 left, right= st.columns(2)
                 with right:        
-                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png"])
+                        uploaded_file = st.file_uploader("upload image",type=["jpg", "jpeg", "png"])
                         image=""   
                         if uploaded_file is not None:
                             image = Image.open(uploaded_file)
@@ -206,22 +206,22 @@ with tab3:
                             st.write(data_to_save.head())
 
                             # Save data to Snowflake
-                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                        if conn:
-                            st.info('Connected to Snowflake!')
+                        # conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                        # if conn:
+                        #     st.info('Connected to Snowflake!')
 
-                            table_name = st.text_input('Enter table name in Snowflake')
+                        #     table_name = st.text_input('Enter table name in Snowflake')
 
-                            if st.button('Save to Snowflake'):
-                                try:
-                                    data_f=pd.DataFrame(data_to_save)
-                                    success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
+                        #     if st.button('Save to Snowflake'):
+                        #         try:
+                        #             data_f=pd.DataFrame(data_to_save)
+                        #             success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
                                     
-                                    st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
-                                except Exception as e:
-                                    st.error(f'Error: {str(e)}')
-                        else:
-                            st.error('Unable to connect to Snowflake. Please check your credentials.')          
+                        #             st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
+                        #         except Exception as e:
+                        #             st.error(f'Error: {str(e)}')
+                        # else:
+                        #     st.error('Unable to connect to Snowflake. Please check your credentials.')          
                 
                 
 
