@@ -200,7 +200,7 @@ with tab3:
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
-                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                            conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                         if conn:
                             st.info('Connected to Snowflake!')
 
