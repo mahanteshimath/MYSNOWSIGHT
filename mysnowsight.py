@@ -10,6 +10,7 @@ from PIL import Image
 import google.generativeai as genai
 from concurrent.futures import ThreadPoolExecutor
 
+
 st.set_page_config(
   page_title="MYSNOWSIGHT",
   page_icon="  ",
@@ -34,6 +35,7 @@ with st.sidebar:
 
 # Create a Snowflake connection function
 def create_snowflake_connection(account, role, warehouse, database, schema, user, password):
+    global conn
     try:
         conn = snowflake.connector.connect(
             account=account,
@@ -193,7 +195,10 @@ with tab3:
                             response=get_gemini_response(input_prompt,image_data,input)
                             st.subheader("Answer: ")
                             st.write(response)
-
+                            current_timestamp = time.datetime.now()
+                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
+                            st.subheader('Preview of Uploaded Data')
+                            st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
                         conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                         if conn:
@@ -203,9 +208,9 @@ with tab3:
 
                             if st.button('Save to Snowflake'):
                                 try:
-                                    response=get_gemini_response(input_prompt,image_data,input)
+                                    #response=get_gemini_response(input_prompt,image_data,input)
                                     # Assuming 'prompt' and 'response' are columns in the Snowflake table
-                                    data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
+                                    #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
                                     success, nchunks, nrows, _ = write_pandas(conn=conn, df=data_to_save, table_name=table_name,
                                                                             database=database, schema=schema,
                                                                             auto_create_table=True)
