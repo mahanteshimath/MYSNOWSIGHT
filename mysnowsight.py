@@ -194,13 +194,14 @@ with tab3:
                             st.subheader("Answer: ")
                             st.write(response)
                             current_timestamp = pd.Timestamp.now()  # Correct usage of datetime module
+                            date_time = time.fromtimestamp(current_timestamp)
 
                         # Dataframe creation with file details, question, response, and timestamp
                             data_to_save = pd.DataFrame({
                                 'FILENAME': [uploaded_file.name if uploaded_file else None],
                                 'QUESTION': [input],
                                 'RESPONSE': [response],
-                                'TIMESTAMP': [current_timestamp]
+                                'TIMESTAMP':[date_time]
                             })
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
