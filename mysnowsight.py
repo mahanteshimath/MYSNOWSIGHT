@@ -171,7 +171,7 @@ with tab3:
                 st.title('Document AI: Upload invoices and ask question')
                 left, right= st.columns(2)
                 with right:        
-                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png", "pdf"])
+                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png"])
                         image=""   
                         if uploaded_file is not None:
                             image = Image.open(uploaded_file)
@@ -181,7 +181,7 @@ with tab3:
                         genai.configure(api_key=google_api_key)  
                         st.header("Invoice reader Application")
                         input=st.text_input("Ask about invoice: ",key="input")
-                        submit=st.button("Submit")
+                        submit=st.button("Submit",key="submit")
                         input_prompt = """
                                     You are an expert in understanding invoices.
                                     You will receive input images or PDF as invoices &
@@ -193,7 +193,7 @@ with tab3:
                             response=get_gemini_response(input_prompt,image_data,input)
                             st.subheader("Answer: ")
                             st.write(response)
-                            current_timestamp = pd.datetime.now()  # Correct usage of datetime module
+                            current_timestamp = pd.Timestamp.now()  # Correct usage of datetime module
 
                         # Dataframe creation with file details, question, response, and timestamp
                             data_to_save = pd.DataFrame({
