@@ -195,25 +195,25 @@ with tab3:
                             st.write(response)
 
                             # Pushing response and prompt to Snowflake
-                            conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                            if conn:
-                                st.info('Connected to Snowflake!')
+                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                        if conn:
+                            st.info('Connected to Snowflake!')
 
-                                table_name = st.text_input('Enter table name in Snowflake to store responses')
+                            table_name = st.text_input('Enter table name in Snowflake to store responses')
 
-                                if st.button('Save to Snowflake'):
-                                    try:
-                                        # Assuming 'prompt' and 'response' are columns in the Snowflake table
-                                        data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                        success, nchunks, nrows, _ = write_pandas(conn=conn, df=data_to_save, table_name=table_name,
-                                                                                database=database, schema=schema,
-                                                                                auto_create_table=True)
+                            if st.button('Save to Snowflake'):
+                                try:
+                                    # Assuming 'prompt' and 'response' are columns in the Snowflake table
+                                    data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
+                                    success, nchunks, nrows, _ = write_pandas(conn=conn, df=data_to_save, table_name=table_name,
+                                                                            database=database, schema=schema,
+                                                                            auto_create_table=True)
 
-                                        st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
-                                    except Exception as e:
-                                        st.error(f'Error: {str(e)}')
-                            else:
-                                st.error('Unable to connect to Snowflake. Please check your credentials.')
+                                    st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
+                                except Exception as e:
+                                    st.error(f'Error: {str(e)}')
+                        else:
+                            st.error('Unable to connect to Snowflake. Please check your credentials.')
           
                 
                 
