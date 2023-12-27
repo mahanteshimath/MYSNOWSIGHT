@@ -169,29 +169,24 @@ with tab3:
                         raise FileNotFoundError("No file uploaded")
                 st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                 st.title('Document AI: Upload invoices and ask question')
-                row_input = st.columns((2,1,2,1))
-                with row_input[0]:
-                    google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
-                    genai.configure(api_key=google_api_key)        
-                    with row_input[2]:
-                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png", "pdf"])
                 left, right= st.columns(2)
-                with right:
+                with right:        
+                        uploaded_file = st.file_uploader("",type=["jpg", "jpeg", "png", "pdf"])
                         image=""   
                         if uploaded_file is not None:
                             image = Image.open(uploaded_file)
                             st.image(image, caption="Uploaded Image.", use_column_width=True)
                 with left:
-                        st.header("Gemini Application")
+                        google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
+                        genai.configure(api_key=google_api_key)  
+                        st.header("Invoice reader Application")
                         input=st.text_input("Ask about invoice: ",key="input")
                         submit=st.button("Submit")
                         input_prompt = """
                                     You are an expert in understanding invoices.
-                                    You will receive input images as invoices &
+                                    You will receive input images or PDF as invoices &
                                     you will have to answer questions based on the input image
                                     """
-
-                        ## If ask button is clicked
 
                         if submit:
                             image_data = input_image_setup(uploaded_file)
