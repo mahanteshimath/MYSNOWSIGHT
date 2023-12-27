@@ -85,7 +85,7 @@ with tab1:
                     st.title("My Snowsight")
                     #link to  YouTube channel
                     # st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
-                    st.markdown('<p style="color: yellow;">👉 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥 Visit my YouTube channel for more details</a></p>', unsafe_allow_html=True)
+                    st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
 
 
                     # Text area to input queries
@@ -107,7 +107,8 @@ with tab1:
 with tab2:
             def main():
                 st.title('Upload File to Snowflake')
-                st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
+                # st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
+                st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                 file = st.file_uploader('Upload file', type=['xls', 'xlsx', 'csv', 'txt'])
 
                 if file is not None:
@@ -141,7 +142,8 @@ with tab2:
                 main()
 with tab3:
             def main():
-                st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
+                # st.markdown(" 👉 [🎥Visit my YouTube channel for more details](https://bit.ly/atozaboutdata)")
+                st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                 st.title('Document AI: Upload invoices and ask question')
                 
 
