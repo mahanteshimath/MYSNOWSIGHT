@@ -207,8 +207,8 @@ with tab3:
                             st.subheader('Preview of Uploaded Data')
                             st.write(data_to_save.head())
                             # Pushing response and prompt to Snowflake
-                conn1=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                if conn1:
+                conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                if conn:
                           st.info('Connected to Snowflake!')
                           
                           st.write(data_to_save.head())
@@ -220,7 +220,7 @@ with tab3:
                                   #response=get_gemini_response(input_prompt,image_data,input)
                                   # Assuming 'prompt' and 'response' are columns in the Snowflake table
                                   #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                  success, nchunks, nrows, _ = write_pandas(conn=conn1, df=DF, table_name=table_name,
+                                  success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
                                                                           database=database, schema=schema,
                                                                           auto_create_table=True)
     
