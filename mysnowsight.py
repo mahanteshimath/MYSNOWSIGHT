@@ -148,7 +148,7 @@ with tab2:
             if __name__ == '__main__':
                 main()
 with tab3:
-            def main():
+        def main():
                 def get_gemini_response(input,image,prompt):
                     model = genai.GenerativeModel('gemini-pro-vision')
                     response = model.generate_content([input,image[0],prompt])
@@ -179,61 +179,61 @@ with tab3:
                             image = Image.open(uploaded_file)
                             st.image(image, caption="Uploaded Image.", use_column_width=True)
                 with left:
-                        google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
-                        genai.configure(api_key=google_api_key)  
-                        st.header("Invoice reader Application")
-                        input=st.text_input("Ask about invoice: ",key="input")
-                        submit=st.button("Submit")
-                        input_prompt = """
-                                    You are an expert in understanding invoices.
-                                    You will receive input images or PDF as invoices &
-                                    you will have to answer questions based on the input image
-                                    """
+                            google_api_key = st.text_input("INPUT GOOGLE_API_KEY")
+                            genai.configure(api_key=google_api_key)  
+                            st.header("Invoice reader Application")
+                            input=st.text_input("Ask about invoice: ",key="input")
+                            submit=st.button("Submit")
+                            input_prompt = """
+                                        You are an expert in understanding invoices.
+                                        You will receive input images or PDF as invoices &
+                                        you will have to answer questions based on the input image
+                                        """
 
-                        if submit:
-                            image_data = input_image_setup(uploaded_file)
-                            response=get_gemini_response(input_prompt,image_data,input)
-                            st.subheader("Answer: ")
-                            st.write(response)
-                            current_timestamp = pd.Timestamp.now()
-                            st.subheader("data frame: ")
-                            st.write(uploaded_file.name)
-                            st.write(input)
-                            st.write(response)
-                            st.write(current_timestamp)
+                            if submit:
+                                image_data = input_image_setup(uploaded_file)
+                                response=get_gemini_response(input_prompt,image_data,input)
+                                st.subheader("Answer: ")
+                                st.write(response)
+                                current_timestamp = pd.Timestamp.now()
+                                st.subheader("data frame: ")
+                                st.write(uploaded_file.name)
+                                st.write(input)
+                                st.write(response)
+                                st.write(current_timestamp)
 
-                            data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
-                            DF=pd.DataFrame(data_to_save)
-                            st.subheader('Preview of Uploaded Data')
-                            st.write(data_to_save.head())
-                            # Pushing response and prompt to Snowflake
-                conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                if conn:
-                          st.info('Connected to Snowflake!')
-                          
-                          st.write(data_to_save.head())
-    
-                          table_name = st.text_input('Enter table name in Snowflake to store responses')
-    
-                          if st.button('Save to Snowflake'):
-                              try:
-                                  #response=get_gemini_response(input_prompt,image_data,input)
-                                  # Assuming 'prompt' and 'response' are columns in the Snowflake table
-                                  #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
-                                  success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
-                                                                          database=database, schema=schema,
-                                                                          auto_create_table=True)
-    
-                                  st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
-                              except Exception as e:
-                                  st.error(f'Error: {str(e)}')
-                else:
-                          st.error('Unable to connect to Snowflake. Please check your credentials.')
+                                data_to_save = pd.DataFrame({'FILENME': [uploaded_file.name],'QUESTION': [input], 'RESPONSE': [response],  'TIMESTAMP': [current_timestamp]})
+                                DF=pd.DataFrame(data_to_save)
+                                st.subheader('Preview of Uploaded Data')
+                                st.write(data_to_save.head())
+                                # Pushing response and prompt to Snowflake
+                            conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                            if conn:
+                                    st.info('Connected to Snowflake!')
+                                    
+                                    st.write(data_to_save.head())
+                
+                                    table_name = st.text_input('Enter table name in Snowflake to store responses')
+                
+                                    if st.button('Save to Snowflake'):
+                                        try:
+                                            #response=get_gemini_response(input_prompt,image_data,input)
+                                            # Assuming 'prompt' and 'response' are columns in the Snowflake table
+                                            #data_to_save = pd.DataFrame({'FILENME': [uploaded_file],'QUESTION': [input], 'RESPONSE': [response]})
+                                            success, nchunks, nrows, _ = write_pandas(conn=conn, df=DF, table_name=table_name,
+                                                                                    database=database, schema=schema,
+                                                                                    auto_create_table=True)
+                
+                                            st.success(f'Data loaded to Snowflake table: {table_name} - Rows: {nrows}')
+                                        except Exception as e:
+                                            st.error(f'Error: {str(e)}')
+                            else:
+                                    st.error('Unable to connect to Snowflake. Please check your credentials.')
           
                 
                 
 
-            if __name__ == '__main__':
+        if __name__ == '__main__':
                 main()
                
  
