@@ -9,7 +9,7 @@ import pathlib
 import textwrap
 from PIL import Image
 import google.generativeai as genai
-from pdf2image
+from pdf2image import convert_from_bytes
 import io
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
@@ -158,7 +158,7 @@ with tab3:
                     pdf_images = []
                     pdf_bytes = uploaded_pdf.read()
                     # images = pdf2image.convert_from_bytes(imagem_referencia.read())
-                    images = pdf2image.convert_from_bytes(pdf_bytes, 200)  # Change resolution as needed
+                    images =convert_from_bytes(pdf_bytes, 200)  # Change resolution as needed
                     for img in images:
                         pdf_images.append(img)
                     return pdf_images
