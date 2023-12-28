@@ -7,3 +7,4 @@ PyPDF2
 chromadb
 faiss-cpu
 pdf2image
+poppler-utils
