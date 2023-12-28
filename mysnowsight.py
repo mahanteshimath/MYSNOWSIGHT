@@ -13,6 +13,7 @@ from pdf2image import convert_from_path
 from pdf2image import convert_from_bytes
 import io
 from concurrent.futures import ThreadPoolExecutor
+os.environ["POPPLER_PATH"] = "/usr/bin" 
 
 st.set_page_config(
   page_title="MYSNOWSIGHT",
