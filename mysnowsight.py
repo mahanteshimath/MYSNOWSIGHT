@@ -194,8 +194,11 @@ with tab3:
                                 st.image(image, caption="Uploaded Image.", use_column_width=True)
                             elif file_extension == 'pdf':
                                                                 # If it's a PDF file, convert pages to images and display
+                                temp_dir = tempfile.mkdtemp()
+                                path_of_pdf = os.path.join(temp_dir, uploaded_file.name)
+                                st.write("path_of_pdf")
                                 st.write("Preview of PDF Pages:")
-                                pdf_images = convert_pdf_to_images(uploaded_file)
+                                pdf_images = convert_pdf_to_images(path_of_pdf)
                                 for page in pdf_images:
                                     st.image(page, caption="PDF Page", use_column_width=True)
                 with left:
