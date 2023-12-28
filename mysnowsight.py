@@ -158,7 +158,8 @@ with tab3:
                 def convert_pdf_to_images(uploaded_pdf):
                     pdf_images = []
                     pdf_bytes = uploaded_pdf.read()
-                    images = convert_from_bytes(pdf_bytes, 200)  # Change resolution as needed
+                    # images = pdf2image.convert_from_bytes(imagem_referencia.read())
+                    images = pdf2image.convert_from_bytes(pdf_bytes, 200)  # Change resolution as needed
                     for img in images:
                         pdf_images.append(img)
                     return pdf_images
@@ -199,7 +200,7 @@ with tab3:
                                 path_of_pdf = os.path.join(temp_dir, uploaded_file.name)
                                 st.write("path_of_pdf:"+ path_of_pdf)
                                 st.write("Preview of PDF Pages:")
-                                pdf_images = convert_pdf_to_images(path_of_pdf)
+                                pdf_images = convert_pdf_to_images(uploaded_file)
                                 for page in pdf_images:
                                     st.image(page, caption="PDF Page", use_column_width=True)
                 with left:
