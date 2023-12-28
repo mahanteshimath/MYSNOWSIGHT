@@ -197,7 +197,7 @@ with tab3:
                                                                 # If it's a PDF file, convert pages to images and display
                                 temp_dir = tempfile.mkdtemp()
                                 path_of_pdf = os.path.join(temp_dir, uploaded_file.name)
-                                st.write("path_of_pdf:"path_of_pdf)
+                                st.write("path_of_pdf:"+ path_of_pdf)
                                 st.write("Preview of PDF Pages:")
                                 pdf_images = convert_pdf_to_images(path_of_pdf)
                                 for page in pdf_images:
