@@ -6,3 +6,4 @@ langchain
 PyPDF2
 chromadb
 faiss-cpu
+pdf2image

@@ -9,6 +9,9 @@ import pathlib
 import textwrap
 from PIL import Image
 import google.generativeai as genai
+from pdf2image import convert_from_path
+from pdf2image import convert_from_bytes
+import io
 from concurrent.futures import ThreadPoolExecutor
 
 st.set_page_config(
@@ -148,6 +151,13 @@ with tab2:
                 main()
 with tab3:
             def main():
+                def convert_pdf_to_images(uploaded_pdf):
+                    pdf_images = []
+                    pdf_bytes = uploaded_pdf.read()
+                    images = convert_from_bytes(pdf_bytes, 200)  # Change resolution as needed
+                    for img in images:
+                        pdf_images.append(img)
+                    return pdf_images
                 def get_gemini_response(input,image,prompt):
                     model = genai.GenerativeModel('gemini-pro-vision')
                     response = model.generate_content([input,image[0],prompt])
@@ -172,11 +182,19 @@ with tab3:
                 st.title('Document AI: Upload invoices and ask question')
                 left, right= st.columns(2)
                 with right:        
-                        uploaded_file = st.file_uploader("upload image",type=["jpg", "jpeg", "png"])
+                        uploaded_file = st.file_uploader("Upload PDF or Image", type=["pdf", "jpg", "jpeg", "png"])
                         image=""   
                         if uploaded_file is not None:
-                            image = Image.open(uploaded_file)
-                            st.image(image, caption="Uploaded Image.", use_column_width=True)
+                            file_extension = uploaded_file.name.split('.')[-1].lower()
+                            if file_extension in ['jpg', 'jpeg', 'png']:
+                                image = Image.open(uploaded_file)
+                                st.image(image, caption="Uploaded Image.", use_column_width=True)
+                            elif file_extension == 'pdf':
+                                                                # If it's a PDF file, convert pages to images and display
+                                st.write("Preview of PDF Pages:")
+                                pdf_images = convert_pdf_to_images(uploaded_file)
+                                for page in pdf_images:
+                                    st.image(page, caption="PDF Page", use_column_width=True)
                 with left:
                         google_api_key = st.text_input("INPUT GOOGLE_API_KEY",key="google_api_key")
                         genai.configure(api_key=google_api_key)  
