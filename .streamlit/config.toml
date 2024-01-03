@@ -1,6 +1,9 @@
 [server]
 maxUploadSize = 500
 
+[global]
+dataFrameSerialization = "legacy"
+
 [theme]
 primaryColor="#5681d0"
 backgroundColor="#212750"
