@@ -278,10 +278,10 @@ with tab4:
                                                         df = cursor.execute(ddl_query)
                                                         ddl_statements.append(df.fetchone()[0])
                                                 
-                                            combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                                            st.write("### Generate DDL")
-                                            language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                            st.code(combined_ddl, language=language)
+                                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                                st.write("### Generate DDL")
+                                                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                                st.code(combined_ddl, language=language)
                             
                             # Close Snowflake cursor and connection
                     cursor.close()
