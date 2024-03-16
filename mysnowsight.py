@@ -216,11 +216,11 @@ with tab4:
             def main():
                   st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
                   st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
-                  # Establish Snowflake connection and get cursor
-                                          # Save data to Snowflake
-                  conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                  if conn:
-                    st.info('Connected to Snowflake!')
+                  if all([account, role, warehouse, database, schema, user, password]):
+                    conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                    if conn:
+                                st.info('Connected to Snowflake!')
+                  
             
             if __name__ == '__main__':
                 main()                
