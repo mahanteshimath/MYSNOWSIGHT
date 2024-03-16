@@ -1,3 +1,4 @@
+import re
 import streamlit as st
 import pandas as pd
 import snowflake.connector
@@ -214,7 +215,63 @@ with tab3:
 with tab4:
             def main():
                   st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
-                  st.write(":balloon: :balloon: This app is to Generate DDL :balloon: :balloon:")
+                  st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
+                  session = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                  
+
+                  db_list = session.sql("SHOW DATABASES").collect()
+                  db_names = [db[1] for db in db_list]
+
+                  db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+                  if db_name:
+                        sch_list = session.sql(f"SHOW SCHEMAS IN DATABASE {db_name}").collect()
+                        sch_names = [sch[1] for sch in sch_list]
+                        sch_name = st.selectbox("Select Schema", sch_names, index=0, key=f"schemaname_list")
+                        if sch_name:
+                            entity_types = [
+                                "Dynamic Table", "Event Table", "File Format", "Function",
+                                "Iceberg Table", "Masking Policy", "Password Policy", "Pipe",
+                                "Procedure", "Row Access Policy", "Sequence", "Session Policy",
+                                "Stream", "Table", "Tag", "Task", "View"
+                            ]
+                            entity_type = st.selectbox("Select Object Type", entity_types)
+
+                            if entity_type:
+                                ent_list = (session
+                                            .sql(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
+                                            .collect()
+                                )
+                                if ent_list:
+                                    if ent_list[0].asDict().get("is_builtin",""):
+                                        ent_names = [ent.arguments for ent in ent_list if ent.is_builtin == 'N']
+                                    else:
+                                        ent_names = [ent.name for ent in ent_list]
+                                    
+                                    ent_names.insert(0, "ALL")
+                                    
+                                    selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
+                                    if selected_entities:
+                                        if 'ALL' in selected_entities:
+                                            selected_entities = ent_names[1:]
+                                        
+                                        if 'Policy' in entity_type:
+                                            ent_type = 'Policy'
+                                        else:
+                                            ent_type = re.sub(" ", "_", entity_type)
+                                        
+                                        ddl_statements = []
+                                        for entity_name in selected_entities:
+                                            ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                            df = (session
+                                                .sql(f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL")
+                                                .collect()
+                                            )
+                                            ddl_statements.append(df[0].DDL)
+                                        
+                                        combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                        st.write("### Generate DDL")
+                                        language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                        st.code(combined_ddl, language=language)
 
             if __name__ == '__main__':
                 main()                
