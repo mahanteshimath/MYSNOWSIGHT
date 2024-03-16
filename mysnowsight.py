@@ -18,7 +18,7 @@ st.set_page_config(
   initial_sidebar_state="expanded",
 ) 
 
-tab1, tab2, tab3 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI"])
+tab1, tab2, tab3 , tab4 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI", "GENERATE DDL"])
 
 # Sidebar for Snowflake credentials
 with st.sidebar:
@@ -209,31 +209,18 @@ with tab3:
                             table_name='INVOICE_DATA'
                             write_pandas(conn=create_snowflake_connection(account, role, warehouse, database, schema, user, password),df=data_to_save,table_name=table_name,database=database,schema=schema,auto_create_table=True)
 
-                            # Save data to Snowflake
-                        # conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                        # if conn:
-                        #     st.info('Connected to Snowflake!')
-
-                        #     table_name = st.text_input('Enter table name in Snowflake')
-
-                        #     if st.button('Save to Snowflake'):
-                        #         try:
-                        #             data_f=pd.DataFrame(data_to_save)
-                        #             success, nchunks, nrows, _ = write_pandas(conn=conn,df=data_f,table_name=table_name,database=database,schema=schema,auto_create_table=True)
-                                    
-                        #             st.success(f'Dataloaded to snowflake table: {table_name}  rows : {nrows}')
-                        #         except Exception as e:
-                        #             st.error(f'Error: {str(e)}')
-                        # else:
-                        #     st.error('Unable to connect to Snowflake. Please check your credentials.')          
-                
-                
-
             if __name__ == '__main__':
                 main()
+with tab4:
+            def main():
+                  st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
+                  st.write(":balloon: :balloon: This app is to Generate DDL :balloon: :balloon:")
+
+            if __name__ == '__main__':
+                main()                
                
  
-                # Adding a footer
+# Adding a footer
 footer="""<style>
 a:link , a:visited{
 color: blue;
