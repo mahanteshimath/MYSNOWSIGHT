@@ -264,6 +264,7 @@ with tab4:
 
                                             if selected_entities:
                                                 if 'ALL' in selected_entities:
+                                                    selected_entities = ent_names[1:]
                                                     ddl_statements = []
                                                     for ent in ent_list:
                                                         ent_name = re.sub("(.*?) RETURN.*", "\\1", ent[1])
