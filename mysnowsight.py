@@ -217,8 +217,8 @@ with tab4:
                   st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
                   st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
    # Establish Snowflake connection and get cursor
-            cursor = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-
+            connection = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+            cursor = connection.cursor()
             if cursor:
                 db_list = cursor.execute("SHOW DATABASES")
                 db_names = [db[1] for db in db_list]
