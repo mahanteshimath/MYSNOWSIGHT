@@ -220,6 +220,10 @@ with tab4:
                     conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                     if conn:
                                 st.info('Connected to Snowflake!')
+                                db_list = conn.execute("SHOW DATABASES")
+                                db_names = [db[1] for db in db_list]
+
+                                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
                   
             
             if __name__ == '__main__':
