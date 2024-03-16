@@ -246,38 +246,38 @@ with tab4:
                                             ent_names.insert(0, "ALL")
                                             
                                             selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
-                                            # if selected_entities:
-                                            #     if 'ALL' in selected_entities:
-                                            #         selected_entities = ent_names[1:]
-                                                
-                                            #     if 'Policy' in entity_type:
-                                            #         ent_type = 'Policy'
-                                            #     else:
-                                            #         ent_type = re.sub(" ", "_", entity_type)
-                                                
-                                            #     ddl_statements = []
-                                            #     for entity_name in selected_entities:
-                                            #         ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                            #         ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                            #         df = cursor.execute(ddl_query)
-                                            #         ddl_statements.append(df.fetchone()[0])
-
                                             if selected_entities:
                                                 if 'ALL' in selected_entities:
-                                                    ent_list = ent_names[1:]
-                                                    ddl_statements = []
-                                                    for ent in ent_list:
-                                                        ent_name = re.sub("(.*?) RETURN.*", "\\1", ent[1])
-                                                        ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                                        df = cursor.execute(ddl_query)
-                                                        ddl_statements.append(df.fetchone()[0])
+                                                    selected_entities = ent_names[1:]
+                                                
+                                                if 'Policy' in entity_type:
+                                                    ent_type = 'Policy'
                                                 else:
-                                                    ddl_statements = []
-                                                    for entity_name in selected_entities:
-                                                        ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                                        ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                                        df = cursor.execute(ddl_query)
-                                                        ddl_statements.append(df.fetchone()[0])
+                                                    ent_type = re.sub(" ", "_", entity_type)
+                                                
+                                                ddl_statements = []
+                                                for entity_name in selected_entities:
+                                                    ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                                    ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                                    df = cursor.execute(ddl_query)
+                                                    ddl_statements.append(df.fetchone()[0])
+
+                                            # if selected_entities:
+                                            #     if 'ALL' in selected_entities:
+                                            #         ent_list = ent_names[1:]
+                                            #         ddl_statements = []
+                                            #         for ent in ent_list:
+                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", ent[1])
+                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                            #             df = cursor.execute(ddl_query)
+                                            #             ddl_statements.append(df.fetchone()[0])
+                                            #     else:
+                                            #         ddl_statements = []
+                                            #         for entity_name in selected_entities:
+                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                            #             df = cursor.execute(ddl_query)
+                                            #             ddl_statements.append(df.fetchone()[0])
                                                 
                                                 combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
                                                 st.write("### Generate DDL")
