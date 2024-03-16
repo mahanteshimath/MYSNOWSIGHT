@@ -266,7 +266,7 @@ with tab4:
                                 st.code(combined_ddl, language=language)
             
             # Close Snowflake cursor and connection
-            cursor.close()
+                cursor.close()
 
             if __name__ == '__main__':
                 main()                
