@@ -218,9 +218,10 @@ with tab4:
                   st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
                   if all([account, role, warehouse, database, schema, user, password]):
                     conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                    cursor = conn.cursor()
                     if conn:
                                 st.info('Connected to Snowflake!')
-                                db_list = conn.execute("SHOW DATABASES")
+                                db_list = cursor.execute("SHOW DATABASES")
                                 db_names = [db[1] for db in db_list]
 
                                 db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
