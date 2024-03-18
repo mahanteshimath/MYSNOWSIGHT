@@ -243,7 +243,7 @@ with tab4:
                                             ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
                                             ent_names = [ent[1] for ent in ent_list]
 
-                                            ent_names.insert(0, "ALL")
+                                            # ent_names.insert(0, "ALL")
                                             
                                             selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
                                             if selected_entities:
