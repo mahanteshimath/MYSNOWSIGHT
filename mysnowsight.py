@@ -247,8 +247,8 @@ with tab4:
                                             
                                             selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
                                             if selected_entities:
-                                                if 'ALL' in selected_entities:
-                                                    selected_entities = ent_names[1:]
+                                                # if 'ALL' in selected_entities:
+                                                #     selected_entities = ent_names[1:]
                                                 
                                                 if 'Policy' in entity_type:
                                                     ent_type = 'Policy'
