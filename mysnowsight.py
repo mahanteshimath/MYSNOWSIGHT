@@ -218,74 +218,49 @@ with tab4:
                   st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
                   if all([account, role, warehouse, database, schema, user, password]):
                     conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                    cursor = conn.cursor()
                     if conn:
-                                st.info('Connected to Snowflake!')
-                                db_list = cursor.execute("SHOW DATABASES")
-                                db_names = [db[1] for db in db_list]
+                        cursor = conn.cursor()
+                        with st.form("generate_ddl_form"):
+                            st.write("### Select Snowflake Database Object")
+                            entity_types = [
+                                "Dynamic Table", "Event Table", "File Format", "Function",
+                                "Iceberg Table", "Masking Policy", "Password Policy", "Pipe",
+                                "Procedure", "Row Access Policy", "Sequence", "Session Policy",
+                                "Stream", "Table", "Tag", "Task", "View"
+                            ]
+                            entity_type = st.selectbox("Object Type", entity_types)
 
-                                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+                            db_list = cursor.execute("SHOW DATABASES")
+                            db_names = [db[1] for db in db_list]
+                            db_name = st.selectbox("Database", db_names)
 
-                                if db_name:
-                                    sch_list = cursor.execute(f"SHOW SCHEMAS IN DATABASE {db_name}")
-                                    sch_names = [sch[1] for sch in sch_list]
-                                    sch_name = st.selectbox("Select Schema", sch_names, index=0, key=f"schemaname_list")
-                                    if sch_name:
-                                        entity_types = [
-                                            "Dynamic Table", "Event Table", "File Format", "Function",
-                                            "Iceberg Table", "Masking Policy", "Password Policy", "Pipe",
-                                            "Procedure", "Row Access Policy", "Sequence", "Session Policy",
-                                            "Stream", "Table", "Tag", "Task", "View"
-                                        ]
-                                        entity_type = st.selectbox("Select Object Type", entity_types)
+                            sch_list = cursor.execute(f"SHOW SCHEMAS IN DATABASE {db_name}")
+                            sch_names = [sch[1] for sch in sch_list]
+                            sch_name = st.selectbox("Schema", sch_names)
 
-                                        if entity_type:
-                                            ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
-                                            ent_names = [ent[1] for ent in ent_list]
+                            ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
+                            ent_names = [ent[1] for ent in ent_list]
+                            selected_entities = st.multiselect(f"{entity_type}s", ent_names)
 
-                                            # ent_names.insert(0, "ALL")
-                                            
-                                            selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
-                                            if selected_entities:
-                                                # if 'ALL' in selected_entities:
-                                                #     selected_entities = ent_names[1:]
-                                                
-                                                if 'Policy' in entity_type:
-                                                    ent_type = 'Policy'
-                                                else:
-                                                    ent_type = re.sub(" ", "_", entity_type)
-                                                
-                                                ddl_statements = []
-                                                for entity_name in selected_entities:
-                                                    ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                                    ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                                    df = cursor.execute(ddl_query)
-                                                    ddl_statements.append(df.fetchone()[0])
+                            submitted = st.form_submit_button("Generate DDL")
 
-                                            # if selected_entities:
-                                            #     if 'ALL' in selected_entities:
-                                            #         ent_list = ent_names[1:]
-                                            #         ddl_statements = []
-                                            #         for ent in ent_list:
-                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", ent[1])
-                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                            #             df = cursor.execute(ddl_query)
-                                            #             ddl_statements.append(df.fetchone()[0])
-                                            #     else:
-                                            #         ddl_statements = []
-                                            #         for entity_name in selected_entities:
-                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                            #             df = cursor.execute(ddl_query)
-                                            #             ddl_statements.append(df.fetchone()[0])
-                                                
-                                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                                                st.write("### Generate DDL")
-                                                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                                st.code(combined_ddl, language=language)
+                        if submitted:
+                            ddl_statements = []
+                            for entity_name in selected_entities:
+                                ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                df = cursor.execute(ddl_query)
+                                ddl_statements.append(df.fetchone()[0])
+
+                            combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                            st.write("### Generated DDL")
+                            language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                            st.code(combined_ddl, language=language)
+                    else:
+                        st.error("Please check your Snowflake credentials.")
                             
-                            # Close Snowflake cursor and connection
-                    cursor.close()
+                    #         # Close Snowflake cursor and connection
+                    # cursor.close()
                                     
                                 
             if __name__ == '__main__':
