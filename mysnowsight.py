@@ -242,7 +242,7 @@ with tab4:
                                         if entity_type:
                                             if entity_type =='Function':
                                                  ent_list = cursor.execute(f"SHOW USER FUNCTIONS IN SCHEMA {db_name}.{sch_name}")
-                                                 ent_names = [ent[9] for ent in ent_list]
+                                                 ent_names = [ent[8] for ent in ent_list]
                                             else:
                                                  ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
                                                  ent_names = [ent[1] for ent in ent_list]
