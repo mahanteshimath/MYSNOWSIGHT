@@ -244,13 +244,13 @@ with tab4:
                                         entity_type = st.selectbox("Select Object Type", entity_types)
 
                                         if entity_type:
-                                            if entity_type =='Function':
-                                                 ent_list = cursor.execute(f"SHOW USER FUNCTIONS IN SCHEMA {db_name}.{sch_name}")
+                                            if entity_type =='Function' or entity_type =='Procedure':
+                                                 ent_list = cursor.execute(f"SHOW USER {entity_type}S IN SCHEMA {db_name}.{sch_name}")
                                                  ent_names = [ent[8] for ent in ent_list]
 
-                                            if entity_type =='Procedure':
-                                                 ent_list = cursor.execute(f"SHOW USER PROCEDURES IN SCHEMA {db_name}.{sch_name}")
-                                                 ent_names = [ent[8] for ent in ent_list]     
+                                            # if entity_type =='Procedure':
+                                            #      ent_list = cursor.execute(f"SHOW USER PROCEDURES IN SCHEMA {db_name}.{sch_name}")
+                                            #      ent_names = [ent[8] for ent in ent_list]     
                                                  
                                             else:
                                                  ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
