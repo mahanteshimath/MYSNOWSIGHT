@@ -273,7 +273,7 @@ with tab4:
 
                                             # ent_names.insert(0, "ALL")
                                             
-                                            selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
+                                                 selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
                                             if selected_entities:
                                                 
                                                 if 'Policy' in entity_type:
