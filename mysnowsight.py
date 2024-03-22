@@ -240,7 +240,10 @@ with tab4:
                                         entity_type = st.selectbox("Select Object Type", entity_types)
 
                                         if entity_type:
-                                            ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
+                                            if entity_type =='Function':
+                                                 ent_list = cursor.execute(f"SHOW USER FUNCTIONS IN SCHEMA {db_name}.{sch_name}")
+                                            else:
+                                                 ent_list = cursor.execute(f"SHOW {re.sub('Policy','Policie',entity_type)}S IN SCHEMA {db_name}.{sch_name}")
                                             ent_names = [ent[1] for ent in ent_list]
 
                                             # ent_names.insert(0, "ALL")
