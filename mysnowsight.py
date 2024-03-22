@@ -219,7 +219,23 @@ with tab4:
                   if all([account, role, warehouse, database, schema, user, password]):
                     conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                     cursor = conn.cursor()
-                    if conn:
+                    chk_box = st.selectbox("Do you want to Generate DDL for entire DB?",options=["YES","NO"] , index=1)
+                    if conn and chk_box=='YES':
+                                st.info('Connected to Snowflake!')
+                                db_list = cursor.execute("SHOW DATABASES")
+                                db_names = [db[1] for db in db_list]
+
+                                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+
+                                if db_name:
+                                     ddl_statements = []
+                                     ddl_query = f"SELECT GET_DDL('DATABSE', '{db_name}', true) AS DDL"
+                                     df = cursor.execute(ddl_query)
+                                     ddl_statements.append(df.fetchone()[0])
+                                     st.code(ddl_statements, language="SQL")
+                                     
+                         
+                    if conn and chk_box=='NO':
                                 st.info('Connected to Snowflake!')
                                 db_list = cursor.execute("SHOW DATABASES")
                                 db_names = [db[1] for db in db_list]
@@ -256,8 +272,6 @@ with tab4:
                                             
                                             selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
                                             if selected_entities:
-                                                # if 'ALL' in selected_entities:
-                                                #     selected_entities = ent_names[1:]
                                                 
                                                 if 'Policy' in entity_type:
                                                     ent_type = 'Policy'
@@ -271,23 +285,6 @@ with tab4:
                                                     df = cursor.execute(ddl_query)
                                                     ddl_statements.append(df.fetchone()[0])
 
-                                            # if selected_entities:
-                                            #     if 'ALL' in selected_entities:
-                                            #         ent_list = ent_names[1:]
-                                            #         ddl_statements = []
-                                            #         for ent in ent_list:
-                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", ent[1])
-                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                            #             df = cursor.execute(ddl_query)
-                                            #             ddl_statements.append(df.fetchone()[0])
-                                            #     else:
-                                            #         ddl_statements = []
-                                            #         for entity_name in selected_entities:
-                                            #             ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                            #             ddl_query = f"SELECT GET_DDL('{entity_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                            #             df = cursor.execute(ddl_query)
-                                            #             ddl_statements.append(df.fetchone()[0])
-                                                
                                                 combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
                                                 st.write("### Generate DDL")
                                                 language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
