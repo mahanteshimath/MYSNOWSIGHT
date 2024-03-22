@@ -227,7 +227,7 @@ with tab4:
 
                                 db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
 
-                                if db_name:
+                                if db_name and st.button('Generate DDL'):
                                      ddl_statements = []
                                      ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
                                      df = cursor.execute(ddl_query)
@@ -280,18 +280,18 @@ with tab4:
                                                     ent_type = 'Policy'
                                                 else:
                                                     ent_type = re.sub(" ", "_", entity_type)
-                                                
-                                                ddl_statements = []
-                                                for entity_name in selected_entities:
-                                                    ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                                    ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                                    df = cursor.execute(ddl_query)
-                                                    ddl_statements.append(df.fetchone()[0])
+                                                if st.button('Generate DDL'):
+                                                    ddl_statements = []
+                                                    for entity_name in selected_entities:
+                                                        ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                                        ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                                        df = cursor.execute(ddl_query)
+                                                        ddl_statements.append(df.fetchone()[0])
 
-                                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                                                st.write("### Generate DDL")
-                                                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                                st.code(combined_ddl, language=language)
+                                                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                                    st.write("### Generate DDL")
+                                                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                                    st.code(combined_ddl, language=language)
                             
                             # Close Snowflake cursor and connection
                     cursor.close()
