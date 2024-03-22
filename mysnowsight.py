@@ -232,7 +232,10 @@ with tab4:
                                      ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
                                      df = cursor.execute(ddl_query)
                                      ddl_statements.append(df.fetchone()[0])
-                                     st.code(ddl_statements, language="SQL")
+                                     combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                     st.write("### Generate DDL")
+                                     language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                     st.code(combined_ddl, language=language)
                                      
                          
                     if conn and chk_box=='NO':
