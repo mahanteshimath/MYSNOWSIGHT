@@ -229,7 +229,7 @@ with tab4:
 
                                 if db_name:
                                      ddl_statements = []
-                                     ddl_query = f"SELECT GET_DDL('DATABSE', '{db_name}', true) AS DDL"
+                                     ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
                                      df = cursor.execute(ddl_query)
                                      ddl_statements.append(df.fetchone()[0])
                                      st.code(ddl_statements, language="SQL")
