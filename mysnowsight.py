@@ -220,22 +220,7 @@ with tab4:
                     conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
                     cursor = conn.cursor()
                     chk_box = st.selectbox("Do you want to Generate DDL for entire DB?",options=["YES","NO"] , index=1)
-                    if conn and chk_box=='YES':
-                                st.info('Connected to Snowflake!')
-                                db_list = cursor.execute("SHOW DATABASES")
-                                db_names = [db[1] for db in db_list]
-
-                                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
-
-                                if db_name and st.button('Generate DDL'):
-                                     ddl_statements = []
-                                     ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
-                                     df = cursor.execute(ddl_query)
-                                     ddl_statements.append(df.fetchone()[0])
-                                     combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                                     st.write("### Generate DDL")
-                                     language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                     st.code(combined_ddl, language=language)
+                    
                                      
                          
                     if conn and chk_box=='NO':
@@ -273,7 +258,7 @@ with tab4:
 
                                             # ent_names.insert(0, "ALL")
                                             
-                                                 selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
+                                            selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
                                             if selected_entities:
                                                 
                                                 if 'Policy' in entity_type:
@@ -292,7 +277,22 @@ with tab4:
                                                     st.write("### Generate DDL")
                                                     language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
                                                     st.code(combined_ddl, language=language)
-                            
+                    if conn and chk_box=='YES':
+                                st.info('Connected to Snowflake!')
+                                db_list = cursor.execute("SHOW DATABASES")
+                                db_names = [db[1] for db in db_list]
+
+                                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+
+                                if db_name and st.button('Generate DDL'):
+                                     ddl_statements = []
+                                     ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
+                                     df = cursor.execute(ddl_query)
+                                     ddl_statements.append(df.fetchone()[0])
+                                     combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                     st.write("### Generate DDL")
+                                     language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                     st.code(combined_ddl, language=language)        
                             # Close Snowflake cursor and connection
                     cursor.close()
                                     
