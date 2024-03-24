@@ -313,12 +313,12 @@ with tab5:
                     with col1:
                             st.header("Source Snowflake Credentials")
                             source_account = st.text_input("Source Account")
-                            source_role = st.text_input("Role")
-                            source_warehouse = st.text_input("Warehouse")
-                            source_database = st.text_input("Database")
-                            source_schema = st.text_input("Schema")
-                            source_user = st.text_input("User")
-                            source_password = st.text_input("Password", type="password")
+                            source_role = st.text_input("Source Role")
+                            source_warehouse = st.text_input("Source Warehouse")
+                            source_database = st.text_input("Source Database")
+                            source_schema = st.text_input("Source Schema")
+                            source_user = st.text_input("Source User")
+                            source_password = st.text_input("Source Password", type="password")
 
                             if st.button("Test Source Connection"):
                                 test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password)    
@@ -326,12 +326,12 @@ with tab5:
                     with col2:
                             st.header("Destination Snowflake Credentials")
                             dest_account = st.text_input("Destination Account")
-                            dest_role = st.text_input("Role")
-                            dest_warehouse = st.text_input("Warehouse")
-                            dest_database = st.text_input("Database")
-                            dest_schema = st.text_input("Schema")
-                            dest_user = st.text_input("User")
-                            dest_password = st.text_input("Password", type="password")
+                            dest_role = st.text_input("Destination Role")
+                            dest_warehouse = st.text_input("Destination Warehouse")
+                            dest_database = st.text_input("Destination Database")
+                            dest_schema = st.text_input("Destination Schema")
+                            dest_user = st.text_input("Destination User")
+                            dest_password = st.text_input("Destination Password", type="password")
 
                             if st.button("Test Destination Connection"):
                                 test_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password)      
