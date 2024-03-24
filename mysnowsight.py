@@ -299,6 +299,43 @@ with tab4:
 with tab5:
             def main():
                   st.title(":balloon: :balloon: Replicate databse from one snowflake to another :balloon: :balloon:")
+                  def test_connection(account, role, warehouse, database, schema, user, password):
+                    try:
+                        conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
+                        if conn:
+                            st.success("Connection successful!")
+                        else:
+                            st.error("Connection failed. Please check your credentials.")
+                    except Exception as e:
+                        st.error(f"Error testing connection: {str(e)}")
+
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.header("Source Snowflake Credentials")
+                        source_account = st.text_input("Source Account")
+                        source_role = st.text_input("Role")
+                        source_warehouse = st.text_input("Warehouse")
+                        source_database = st.text_input("Database")
+                        source_schema = st.text_input("Schema")
+                        source_user = st.text_input("User")
+                        source_password = st.text_input("Password", type="password")
+
+                        if st.button("Test Source Connection"):
+                            test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password)
+
+                    with col2:
+                        st.header("Destination Snowflake Credentials")
+                        dest_account = st.text_input("Destination Account")
+                        dest_role = st.text_input("Role")
+                        dest_warehouse = st.text_input("Warehouse")
+                        dest_database = st.text_input("Database")
+                        dest_schema = st.text_input("Schema")
+                        dest_user = st.text_input("User")
+                        dest_password = st.text_input("Password", type="password")
+
+                        if st.button("Test Destination Connection"):
+                            test_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password)      
+
             
             
             
