@@ -19,7 +19,7 @@ st.set_page_config(
   initial_sidebar_state="expanded",
 ) 
 
-tab1, tab2, tab3 , tab4 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI", "GENERATE DDL"])
+tab1, tab2, tab3 , tab4,tab5 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI", "GENERATE DDL","REPLICATE DATABASE"])
 
 # Sidebar for Snowflake credentials
 with st.sidebar:
@@ -296,7 +296,16 @@ with tab4:
             if __name__ == '__main__':
                 main()                
                
- 
+with tab5:
+            def main():
+                  st.title(":balloon: :balloon: Replicate databse from one snowflake to another :balloon: :balloon:")
+            
+            
+            
+            
+            if __name__ == '__main__':
+                main()                
+                
 # Adding a footer
 footer="""<style>
 a:link , a:visited{
