@@ -388,8 +388,8 @@ with tab5:
                             df_q = source_cursor.execute(ddl_q)
                             ddl.append(df_q.fetchone()[0])
                             combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
-                            cr_db_schmema=f"'BEGIN create or replace database {source_database};
-                                            create or replace schema {source_database}.{source_schema}; END;'"
+                            cr_db_schmema=f'''BEGIN create or replace database {source_database};
+                                            create or replace schema {source_database}.{source_schema}; END;'''
                             dest_cursor.execute(cr_db_schmema)
                             dest_cursor.execute(combined_ddl)
                             combined_ddl=f" BEGIN USE {source_database}.{source_schema}; {combined_ddl} END;"
