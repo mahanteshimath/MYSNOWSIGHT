@@ -396,8 +396,7 @@ with tab5:
                             cr_db_schmema=f"USE {source_database}.{source_schema}"
                             dest_cursor.execute(cr_db_schmema)
                             dest_cursor.execute(combined_ddl)
-                            combined_ddl=f'''BEGIN  
-                                             {combined_ddl} 
+                            combined_ddl=f'''BEGIN  {combined_ddl} 
                                              END'''
                             
                             dest_cursor.execute(combined_ddl)
