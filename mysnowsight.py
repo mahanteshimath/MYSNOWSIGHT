@@ -302,13 +302,15 @@ with tab5:
                     def test_connection(account, role, warehouse, database, schema, user, password):
                         try:
                             conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-                            cursor = conn.cursor()
                             if conn:
                                 st.success("Connection successful!")
+                                return conn
                             else:
                                 st.error("Connection failed. Please check your credentials.")
+                                return None
                         except Exception as e:
                             st.error(f"Error testing connection: {str(e)}")
+                            return None
 
                     col1, col2 = st.columns(2)
                     with col1:
