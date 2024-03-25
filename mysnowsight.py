@@ -380,21 +380,23 @@ with tab5:
                     #         st.code(combined_ddl, language=language)
                     # Function to replicate data between two Snowflake accounts
                     def replicate_data(source_conn, dest_conn, source_database, source_schema, dest_database, dest_schema):
-                        try:
-                            # Retrieve tables from source database/schema
-                            source_cursor = source_conn.cursor()
-                            source_tables = source_cursor.execute(f"SHOW TABLES IN {source_database}.{source_schema}")
-                            table_names = [table[1] for table in source_tables]
+                    try:
+                        # Retrieve tables from source database/schema
+                        source_cursor = source_conn.cursor()
+                        source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
+                        table_names = [table[1] for table in source_tables]
 
-                            # Replicate each table from source to destination
-                            for table_name in table_names:
-                                query = f"SELECT * FROM {source_database}.{source_schema}.{table_name}"
-                                df = pd.read_sql(query, source_conn)
-                                write_pandas(conn=dest_conn, df=df, table_name=f"{dest_schema}.{table_name}", database=dest_database, schema=dest_schema)
+                        # Replicate each table from source to destination
+                        for table_name in table_names:
+                            # Construct the fully qualified table name
+                            full_table_name = f'"{source_database}"."{source_schema}"."{table_name}"'
+                            query = f"SELECT * FROM {full_table_name}"
+                            df = pd.read_sql(query, source_conn)
+                            write_pandas(conn=dest_conn, df=df, table_name=f"{dest_schema}.{table_name}", database=dest_database, schema=dest_schema)
 
-                            st.success("Data replication successful!")
-                        except Exception as e:
-                            st.error(f"Error replicating data: {str(e)}")
+                        st.success("Data replication successful!")
+                    except Exception as e:
+                        st.error(f"Error replicating data: {str(e)}")
 
                     # Execute replication process
                     if st.button("Replicate Data"):
