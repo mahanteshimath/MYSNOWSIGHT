@@ -356,7 +356,6 @@ with tab5:
                                     st.toast("Destination Connection to Snowflake successfully!", icon='🎉')
                                     time.sleep(0.5)
 
-                    dest_cursor =dest_conn.cursor()
                     df_q = cursor.execute("show account")
                     st.write(df_q)
             
