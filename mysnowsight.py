@@ -384,7 +384,7 @@ with tab5:
                              # REPLICATE STRUCTURE OF ALL OBJECTS
                             source_cursor = source_conn.cursor()
                             ddl = []
-                            ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                            ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}') AS DDL"
                             df_q = source_cursor.execute(ddl_q)
                             ddl.append(df_q.fetchone()[0])
                             combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
