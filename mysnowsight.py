@@ -388,7 +388,7 @@ with tab5:
                             df_q = source_cursor.execute(ddl_q)
                             ddl.append(df_q.fetchone()[0])
                             combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
-                            combined_ddl=f"{combined_ddl}"
+                            combined_ddl=f" BEGIN {combined_ddl} END;"
                             dest_cursor=dest_conn.cursor()
                             dest_cursor.execute(combined_ddl)
                             st.toast("Structure of all source Snowflake created in Destination!", icon='🎉')
