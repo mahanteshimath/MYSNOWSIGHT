@@ -357,7 +357,7 @@ with tab5:
                                     time.sleep(0.5)
 
                     dest_cursor =dest_conn.cursor()
-                    df_q = dest_cursor.execute("show account")
+                    df_q = cursor.execute("show account")
                     st.write(df_q)
             
             
