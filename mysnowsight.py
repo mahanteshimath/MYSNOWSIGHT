@@ -321,10 +321,20 @@ with tab5:
                             source_password = st.text_input("Source Password", type="password")
 
                             if st.button("Test Source Connection"):
-                                test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password)
+                                conn = test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password)
+                                cursor = conn.cursor()
                                 st.toast("Source Connection to Snowflake successfully!", icon='🎉')
                                 time.sleep(.5)
-                                st.balloons()    
+                                st.balloons()
+
+                                ddl = []
+                                ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                                df_q = cursor.execute(ddl_q)
+                                ddl.append(df_q.fetchone()[0])
+                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                st.write("### Generate DDL")
+                                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                st.code(combined_ddl, language=language)    
 
                     with col2:
                             st.header("Destination Snowflake Credentials")
