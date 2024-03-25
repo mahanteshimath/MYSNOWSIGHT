@@ -358,7 +358,7 @@ with tab5:
                                     cursor = dest_conn.cursor()
                                     ddl = []
                                     ddl_q = f"SELECT CURRENT_ACCOUNT() CURRENT_ACCOUNT"
-                                    ddl_q = f"{src_combined_ddl}"
+                                    # ddl_q = f"{src_combined_ddl}"
                                     df_q = cursor.execute(ddl_q)
                                     ddl.append(df_q.fetchone()[0])
                                     combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
