@@ -1,4 +1,4 @@
--r https://raw.githubusercontent.com/snowflakedb/snowflake-connector-python/v2.7.9/tested_requirements/requirements_39.reqs
+#-r https://raw.githubusercontent.com/snowflakedb/snowflake-connector-python/v2.7.9/tested_requirements/requirements_39.reqs
 streamlit
 openpyxl
 google-generativeai
@@ -8,4 +8,4 @@ PyPDF2
 chromadb
 faiss-cpu
 dlt
-
+snowflake-connector-python==2.7.9
