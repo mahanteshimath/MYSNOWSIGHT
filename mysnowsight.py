@@ -393,8 +393,10 @@ with tab5:
                             dest_cursor.execute(cr_db_schmema)
                             cr_db_schmema=f"create or replace schema {source_database}.{source_schema}"
                             dest_cursor.execute(cr_db_schmema)
+                            cr_db_schmema=f"USE {source_database}.{source_schema}"
+                            dest_cursor.execute(cr_db_schmema)
                             dest_cursor.execute(combined_ddl)
-                            combined_ddl=f" BEGIN USE {source_database}.{source_schema}; {combined_ddl} END;"
+                            combined_ddl=f" BEGIN  {combined_ddl} END;"
                             
                             dest_cursor.execute(combined_ddl)
                             st.toast("Structure of all source Snowflake created in Destination!", icon='🎉')
