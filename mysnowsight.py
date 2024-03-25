@@ -398,7 +398,7 @@ with tab5:
                             dest_cursor.execute(combined_ddl)
                             combined_ddl=f'''BEGIN  
                                              {combined_ddl} 
-                                             END;'''
+                                             END'''
                             
                             dest_cursor.execute(combined_ddl)
                             st.toast("Structure of all source Snowflake created in Destination!", icon='🎉')
