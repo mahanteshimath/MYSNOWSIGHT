@@ -367,18 +367,48 @@ with tab5:
 
 
 
-                    if test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password):
-                        cursor = source_conn.cursor()
-                        ddl = []
-                        ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
-                        df_q = cursor.execute(ddl_q)
-                        ddl.append(df_q.fetchone()[0])
-                        combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
-                        if test_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password):
-                            st.write("### Generate DDL")
-                            language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                            st.code(combined_ddl, language=language)
-                             
+                    # if test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password):
+                    #     cursor = source_conn.cursor()
+                    #     ddl = []
+                    #     ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                    #     df_q = cursor.execute(ddl_q)
+                    #     ddl.append(df_q.fetchone()[0])
+                    #     combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                    #     if test_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password):
+                    #         st.write("### Generate DDL")
+                    #         language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                    #         st.code(combined_ddl, language=language)
+                    # Function to replicate data between two Snowflake accounts
+                    def replicate_data(source_conn, dest_conn, source_database, source_schema, dest_database, dest_schema):
+                        try:
+                            # Retrieve tables from source database/schema
+                            source_cursor = source_conn.cursor()
+                            source_tables = source_cursor.execute(f"SHOW TABLES IN {source_database}.{source_schema}")
+                            table_names = [table[1] for table in source_tables]
+
+                            # Replicate each table from source to destination
+                            for table_name in table_names:
+                                query = f"SELECT * FROM {source_database}.{source_schema}.{table_name}"
+                                df = pd.read_sql(query, source_conn)
+                                write_pandas(conn=dest_conn, df=df, table_name=f"{dest_schema}.{table_name}", database=dest_database, schema=dest_schema)
+
+                            st.success("Data replication successful!")
+                        except Exception as e:
+                            st.error(f"Error replicating data: {str(e)}")
+
+                    # Execute replication process
+                    if st.button("Replicate Data"):
+                        try:
+                            # Create connections to source and destination Snowflake accounts
+                            source_conn = create_snowflake_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password)
+                            dest_conn = create_snowflake_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password)
+
+                            if source_conn and dest_conn:
+                                replicate_data(source_conn, dest_conn, source_database, source_schema, dest_database, dest_schema)
+                            else:
+                                st.error("Unable to establish connections to source and/or destination Snowflake accounts.")
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")             
             
             
             if __name__ == '__main__':
