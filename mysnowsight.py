@@ -355,9 +355,15 @@ with tab5:
                                 if dest_conn:
                                     st.toast("Destination Connection to Snowflake successfully!", icon='🎉')
                                     time.sleep(0.5)
-
-                                df_q = cursor.execute("show account")
-                                st.write(df_q)
+                                    cursor = dest_conn.cursor()
+                                    ddl = []
+                                    ddl_q = f"SELECT CURRENT_ACCOUNT() CURRENT_ACCOUNT"
+                                    df_q = cursor.execute(ddl_q)
+                                    ddl.append(df_q.fetchone()[0])
+                                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                                    st.write("### Generate DDL")
+                                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                    st.code(combined_ddl, language=language)
             
             
             if __name__ == '__main__':
