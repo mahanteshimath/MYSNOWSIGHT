@@ -393,7 +393,7 @@ with tab5:
                                 full_table_name=full_table_name.strip("'")
                                 query = f"SELECT * FROM {full_table_name}"
                                 df = pd.read_sql(query, source_conn)
-                                write_pandas(conn=dest_conn, df=df, table_name={table_name}, database=dest_database, schema=dest_schema)
+                                write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
 
                             st.success("Data replication successful!")
                         except Exception as e:
