@@ -390,6 +390,7 @@ with tab5:
                             for table_name in table_names:
                                 # Construct the fully qualified table name
                                 full_table_name = f'"{source_database}"."{source_schema}"."{table_name}"'
+                                full_table_name=full_table_name.strip("'")
                                 query = f"SELECT * FROM {full_table_name}"
                                 df = pd.read_sql(query, source_conn)
                                 write_pandas(conn=dest_conn, df=df, table_name=f"{dest_schema}.{table_name}", database=dest_database, schema=dest_schema)
