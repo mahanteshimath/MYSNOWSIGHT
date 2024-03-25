@@ -381,6 +381,23 @@ with tab5:
                     # Function to replicate data between two Snowflake accounts
                     def replicate_data(source_conn, dest_conn, source_database, source_schema, dest_database, dest_schema):
                         try:
+                             # REPLICATE STRUCTURE OF ALL OBJECTS
+                            source_cursor = source_conn.cursor()
+                            ddl = []
+                            ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                            df_q = source_cursor.execute(ddl_q)
+                            ddl.append(df_q.fetchone()[0])
+                            combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                            
+                            dest_conn.execute(combined_ddl)
+                            st.toast("Structure of all source Snowflake created in Destination!", icon='🎉')
+                            time.sleep(0.5)
+
+
+                            source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
+                            table_names = [table[1] for table in source_tables]    
+
+
                             # Retrieve tables from source database/schema
                             source_cursor = source_conn.cursor()
                             source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
@@ -393,8 +410,11 @@ with tab5:
                                 full_table_name=full_table_name.strip("'")
                                 query = f"SELECT * FROM {full_table_name}"
                                 df = pd.read_sql(query, source_conn)
-                                write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
-
+                                success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
+                                st.success(f'Source snowflake table: {table_name}  rows : {nrows} replicated')
+                                st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
+                                time.sleep(0.5)
+                                
                             st.success("Data replication successful!")
                         except Exception as e:
                             st.error(f"Error replicating data: {str(e)}")
