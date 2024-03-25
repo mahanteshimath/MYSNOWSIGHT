@@ -330,15 +330,15 @@ with tab5:
                                     time.sleep(0.5)
                                     st.balloons()
                                     # Generate DDL for source database
-                                    cursor = source_conn.cursor()
-                                    ddl = []
-                                    ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
-                                    df_q = cursor.execute(ddl_q)
-                                    ddl.append(df_q.fetchone()[0])
-                                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
-                                    st.write("### Generate DDL")
-                                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                    st.code(combined_ddl, language=language)    
+                                    # cursor = source_conn.cursor()
+                                    # ddl = []
+                                    # ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                                    # df_q = cursor.execute(ddl_q)
+                                    # ddl.append(df_q.fetchone()[0])
+                                    # combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                                    # st.write("### Generate DDL")
+                                    # language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                    # st.code(combined_ddl, language=language)    
 
                     with col2:
                             st.header("Destination Snowflake Credentials")
@@ -355,15 +355,30 @@ with tab5:
                                 if dest_conn:
                                     st.toast("Destination Connection to Snowflake successfully!", icon='🎉')
                                     time.sleep(0.5)
-                                    cursor = dest_conn.cursor()
-                                    ddl = []
-                                    ddl_q = f"SELECT CURRENT_ACCOUNT() CURRENT_ACCOUNT"
-                                    df_q = cursor.execute(ddl_q)
-                                    ddl.append(df_q.fetchone()[0])
-                                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
-                                    st.write("### Generate DDL")
-                                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                    st.code(combined_ddl, language=language)
+                                    # cursor = dest_conn.cursor()
+                                    # ddl = []
+                                    # ddl_q = f"SELECT CURRENT_ACCOUNT() CURRENT_ACCOUNT"
+                                    # df_q = cursor.execute(ddl_q)
+                                    # ddl.append(df_q.fetchone()[0])
+                                    # combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                                    # st.write("### Generate DDL")
+                                    # language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                    # st.code(combined_ddl, language=language)
+
+
+
+                    if test_connection(source_account, source_role, source_warehouse, source_database, source_schema, source_user, source_password):
+                        cursor = source_conn.cursor()
+                        ddl = []
+                        ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
+                        df_q = cursor.execute(ddl_q)
+                        ddl.append(df_q.fetchone()[0])
+                        combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
+                        if test_connection(dest_account, dest_role, dest_warehouse, dest_database, dest_schema, dest_user, dest_password):
+                            st.write("### Generate DDL")
+                            language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                            st.code(combined_ddl, language=language)
+                             
             
             
             if __name__ == '__main__':
