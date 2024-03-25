@@ -331,7 +331,7 @@ with tab5:
                                 ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}', true) AS DDL"
                                 df_q = src_cursor.execute(ddl_q)
                                 ddl.append(df_q.fetchone()[0])
-                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
                                 st.write("### Generate DDL")
                                 language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
                                 st.code(combined_ddl, language=language)    
