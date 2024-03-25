@@ -355,10 +355,10 @@ with tab5:
                                 if dest_conn:
                                     st.toast("Destination Connection to Snowflake successfully!", icon='🎉')
                                     time.sleep(0.5)
-        
 
-            
-            
+                    dest_cursor =dest_conn.cursor()
+                    df_q = dest_cursor.execute("show account")
+                    st.write(df_q)
             
             
             if __name__ == '__main__':
