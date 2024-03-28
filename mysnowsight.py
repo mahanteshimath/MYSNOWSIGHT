@@ -475,7 +475,8 @@ with tab5:
                             else:
                                 st.error("Unable to establish connections to source and/or destination Snowflake accounts.")
                         except Exception as e:
-                            st.error(f"Error: {str(e)}")             
+                            st.error(f"Error: {str(e)}") 
+                                
             
             
             if __name__ == '__main__':
