@@ -472,6 +472,9 @@ with tab5:
 
                             if source_conn and dest_conn:
                                 replicate_data(source_conn, dest_conn, source_database, source_schema, dest_database, dest_schema)
+                                st.toast("All tables replicated successfully. Hurrayyaaaa !!", icon='🎉')
+                                time.sleep(1)
+                                st.balloons()
                             else:
                                 st.error("Unable to establish connections to source and/or destination Snowflake accounts.")
                         except Exception as e:
