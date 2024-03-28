@@ -392,12 +392,25 @@ with tab5:
                                                         WHERE TABLE_TYPE = 'BASE TABLE' AND  TABLE_NAME NOT LIKE '%TEMP_VIEW_DEFS%'
                                                             AND TABLE_SCHEMA='{source_schema}' and IS_TEMPORARY='NO'
                                                         ORDER BY CREATED ASC;
+                                                                                                    
+                                            VW CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
+                                                        FROM INFORMATION_SCHEMA.TABLES 
+                                                        WHERE TABLE_TYPE = 'VIEW' 
+                                                        AND TABLE_SCHEMA='{source_schema}'
+                                                        ORDER BY CREATED ASC;
                                             BEGIN
                                             CREATE OR REPLACE TEMPORARY TABLE TEMP_VIEW_DEFS(VIEW_NAME TEXT, DEFINITION TEXT);
 
                                             FOR rec IN CUR DO   
                                                 EXECUTE IMMEDIATE REPLACE('INSERT INTO TEMP_VIEW_DEFS(VIEW_NAME, DEFINITION)
                                                                     SELECT ''<VIEW_NAME>'', GET_DDL(''TABLE'', ''<VIEW_NAME>'')'
+                                                                    ,'<VIEW_NAME>'
+                                                                    ,rec.NAME);
+                                            END FOR;
+
+                                            FOR rec IN VW DO   
+                                                EXECUTE IMMEDIATE REPLACE('INSERT INTO TEMP_VIEW_DEFS(VIEW_NAME, DEFINITION)
+                                                                    SELECT ''<VIEW_NAME>'', GET_DDL(''VIEW'', ''<VIEW_NAME>'')'
                                                                     ,'<VIEW_NAME>'
                                                                     ,rec.NAME);
                                             END FOR;
