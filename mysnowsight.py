@@ -424,25 +424,24 @@ with tab5:
                             # source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
                             # table_names = [table[1] for table in source_tables]    
 
-                            QRY_TBL=f'''
-                                        SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
-                                                        FROM INFORMATION_SCHEMA.TABLES
-                                                        WHERE TABLE_TYPE = 'BASE TABLE' AND  TABLE_NAME NOT LIKE '%TEMP_VIEW_DEFS%'
-                                                            AND TABLE_SCHEMA='{source_schema}' and IS_TEMPORARY='NO'
-                                                        ORDER BY CREATED ASC
-                                     '''        
+                            # QRY_TBL=f'''
+                            #             SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
+                            #                             FROM INFORMATION_SCHEMA.TABLES
+                            #                             WHERE TABLE_TYPE = 'BASE TABLE' AND  TABLE_NAME NOT LIKE '%TEMP_VIEW_DEFS%'
+                            #                                 AND TABLE_SCHEMA='{source_schema}' and IS_TEMPORARY='NO'
+                            #                             ORDER BY CREATED ASC
+                            #          '''        
                             # Retrieve tables from source database/schema
                             source_cursor = source_conn.cursor()
-                            source_tables = source_cursor.execute(QRY_TBL)
-                            table_names = [table[0] for table in source_tables]
+                            source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
+                            table_names = [table[1] for table in source_tables]
 
                             # Replicate each table from source to destination
                             for table_name in table_names:
                                 # Construct the fully qualified table name
-                                full_table_name = table_name #f'"{source_database}"."{source_schema}"."{table_name}"'
+                                full_table_name = f'"{source_database}"."{source_schema}"."{table_name}"'
                                 full_table_name=full_table_name.strip("'")
                                 query = f"SELECT * FROM {full_table_name}"
-                                st.write(query)
                                 df = pd.read_sql(query, source_conn)
                                 success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
                                 st.success(f'Source snowflake table: {table_name}  rows : {nrows} replicated')
