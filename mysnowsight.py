@@ -384,7 +384,31 @@ with tab5:
                              # REPLICATE STRUCTURE OF ALL OBJECTS
                             source_cursor = source_conn.cursor()
                             ddl = []
-                            ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}',TRUE) AS DDL"
+                            #ddl_q = f"SELECT GET_DDL('DATABASE', '{source_database}',TRUE) AS DDL"
+                            ddl_q = f'''
+                                        DECLARE
+                                            CUR CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
+                                                        FROM INFORMATION_SCHEMA.TABLES
+                                                        WHERE TABLE_TYPE = 'BASE TABLE'
+                                                            AND TABLE_SCHEMA={source_schema}
+                                                        ORDER BY CREATED ASC;
+                                            BEGIN
+                                            CREATE OR REPLACE TEMPORARY TABLE TEMP_VIEW_DEFS(VIEW_NAME TEXT, DEFINITION TEXT);
+
+                                            FOR rec IN CUR DO   
+                                                EXECUTE IMMEDIATE REPLACE('INSERT INTO TEMP_VIEW_DEFS(VIEW_NAME, DEFINITION)
+                                                                    SELECT ''<VIEW_NAME>'', GET_DDL(''TABLE'', ''<VIEW_NAME>'')'
+                                                                    ,'<VIEW_NAME>'
+                                                                    ,rec.NAME);
+                                            END FOR;
+
+                                            LET rs RESULTSET := (SELECT LISTAGG(DEFINITION,' ') DDL FROM TEMP_VIEW_DEFS);
+
+                                            RETURN TABLE(rs);
+                                            END;
+                                     
+
+                                    '''
                             df_q = source_cursor.execute(ddl_q)
                             ddl.append(df_q.fetchone()[0])
                             combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl)
