@@ -390,7 +390,7 @@ with tab5:
                                             CUR CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
                                                         FROM INFORMATION_SCHEMA.TABLES
                                                         WHERE TABLE_TYPE = 'BASE TABLE'
-                                                            AND TABLE_SCHEMA={source_schema}
+                                                            AND TABLE_SCHEMA='{source_schema}'
                                                         ORDER BY CREATED ASC;
                                             BEGIN
                                             CREATE OR REPLACE TEMPORARY TABLE TEMP_VIEW_DEFS(VIEW_NAME TEXT, DEFINITION TEXT);
