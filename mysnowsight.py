@@ -438,7 +438,7 @@ with tab5:
 
                                             SHOW TABLES IN {source_database}.{source_schema};
                                             LET A := SQLID;
-                                            LET rs RESULTSET :=(SELECT * FROM TABLE(RESULT_SCAN(:A)) WHERE "kind" ='TABLE');
+                                            LET rs RESULTSET :=(SELECT * FROM TABLE(RESULT_SCAN(:A)) WHERE "kind" ='TABLE' limit 3);
 
                                             RETURN TABLE(rs);
                                         END;
