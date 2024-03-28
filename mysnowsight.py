@@ -389,7 +389,7 @@ with tab5:
                                         DECLARE
                                             CUR CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
                                                         FROM INFORMATION_SCHEMA.TABLES
-                                                        WHERE TABLE_TYPE = 'BASE TABLE'
+                                                        WHERE TABLE_TYPE = 'BASE TABLE' AND  TABLE_NAME NOT LIKE '%TEMP_VIEW_DEFS%'
                                                             AND TABLE_SCHEMA='{source_schema}' and IS_TEMPORARY='NO'
                                                         ORDER BY CREATED ASC;
                                             BEGIN
