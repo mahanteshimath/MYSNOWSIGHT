@@ -393,11 +393,11 @@ with tab5:
                                                             AND TABLE_SCHEMA='{source_schema}' and IS_TEMPORARY='NO'
                                                         ORDER BY CREATED ASC;
                                                                                                     
-                                            VW CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
-                                                        FROM INFORMATION_SCHEMA.TABLES 
-                                                        WHERE TABLE_TYPE = 'VIEW' 
-                                                        AND TABLE_SCHEMA='{source_schema}'
-                                                        ORDER BY CREATED ASC;
+                                            # VW CURSOR FOR SELECT CONCAT_WS('.',TABLE_CATALOG,TABLE_SCHEMA,'"'||TABLE_NAME||'"') AS NAME
+                                            #             FROM INFORMATION_SCHEMA.TABLES 
+                                            #             WHERE TABLE_TYPE = 'VIEW' 
+                                            #             AND TABLE_SCHEMA='{source_schema}'
+                                            #             ORDER BY CREATED ASC,CREATED ASC;
                                             BEGIN
                                             CREATE OR REPLACE TEMPORARY TABLE TEMP_VIEW_DEFS(VIEW_NAME TEXT, DEFINITION TEXT);
 
@@ -408,12 +408,12 @@ with tab5:
                                                                     ,rec.NAME);
                                             END FOR;
 
-                                            FOR rec IN VW DO   
-                                                EXECUTE IMMEDIATE REPLACE('INSERT INTO TEMP_VIEW_DEFS(VIEW_NAME, DEFINITION)
-                                                                    SELECT ''<VIEW_NAME>'', GET_DDL(''VIEW'', ''<VIEW_NAME>'')'
-                                                                    ,'<VIEW_NAME>'
-                                                                    ,rec.NAME);
-                                            END FOR;
+                                            # FOR rec IN VW DO   
+                                            #     EXECUTE IMMEDIATE REPLACE('INSERT INTO TEMP_VIEW_DEFS(VIEW_NAME, DEFINITION)
+                                            #                         SELECT ''<VIEW_NAME>'', GET_DDL(''VIEW'', ''<VIEW_NAME>'')'
+                                            #                         ,'<VIEW_NAME>'
+                                            #                         ,rec.NAME);
+                                            # END FOR;
 
                                             LET rs RESULTSET := (SELECT LISTAGG(DEFINITION,' ') DDL FROM TEMP_VIEW_DEFS);
 
@@ -451,7 +451,7 @@ with tab5:
 
                                             SHOW TABLES IN {source_database}.{source_schema};
                                             LET A := SQLID;
-                                            LET rs RESULTSET :=(SELECT * FROM TABLE(RESULT_SCAN(:A)) WHERE "kind" ='TABLE' limit 3);
+                                            LET rs RESULTSET :=(SELECT * FROM TABLE(RESULT_SCAN(:A)) WHERE "kind" ='TABLE');
 
                                             RETURN TABLE(rs);
                                         END;
