@@ -439,8 +439,8 @@ with tab5:
                                 df = pd.read_sql(query, source_conn)
                                 success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
                                 st.success(f'Source snowflake table: {table_name}  rows : {nrows} replicated')
-                                st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
-                                time.sleep(0.5)
+                            st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
+                            time.sleep(0.5)
                                 
                             st.success("Data replication successful!")
                         except Exception as e:
