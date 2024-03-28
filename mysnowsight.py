@@ -1,6 +1,7 @@
 import re
 import streamlit as st
 import pandas as pd
+from dlt import snowflake
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
 import time
