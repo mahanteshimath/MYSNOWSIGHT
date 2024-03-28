@@ -433,7 +433,18 @@ with tab5:
                             #          '''        
                             # Retrieve tables from source database/schema
                             source_cursor = source_conn.cursor()
-                            source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
+                            Q_TBLS=f'''
+                                        BEGIN 
+
+                                            SHOW TABLES IN {source_database}.{source_schema};
+                                            LET A := SQLID;
+                                            LET rs RESULTSET :=(SELECT * FROM TABLE(RESULT_SCAN(:A)) WHERE "kind" ='TABLE');
+
+                                            RETURN TABLE(rs);
+                                        END;
+                                    '''
+                            # source_tables = source_cursor.execute(f"SHOW TABLES IN {source_schema}")
+                            source_tables = source_cursor.execute(Q_TBLS)
                             table_names = [table[1] for table in source_tables]
 
                             # Replicate each table from source to destination
