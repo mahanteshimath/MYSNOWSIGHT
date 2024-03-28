@@ -441,7 +441,8 @@ with tab5:
                                 # Construct the fully qualified table name
                                 full_table_name = table_name #f'"{source_database}"."{source_schema}"."{table_name}"'
                                 full_table_name=full_table_name.strip("'")
-                                query = f'''SELECT * FROM {full_table_name}'''
+                                query = f"SELECT * FROM {full_table_name}"
+                                st.write(query)
                                 df = pd.read_sql(query, source_conn)
                                 success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
                                 st.success(f'Source snowflake table: {table_name}  rows : {nrows} replicated')
