@@ -455,7 +455,7 @@ with tab5:
                                 query = f"SELECT * FROM {full_table_name}"
                                 df = pd.read_sql(query, source_conn)
                                 success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
-                                st.success(f'Source snowflake table: {table_name}  rows : {nrows} replicated')
+                                st.success(f'Source table: {table_name}  replicated in Destination DB with rows : {nrows}')
                             st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
                             time.sleep(0.5)
                                 
