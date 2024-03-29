@@ -452,18 +452,21 @@ with tab5:
                             table_names = [table[1] for table in source_tables]
 
                             # Replicate each table from source to destination
+                            total_cnt_tbls=table_names.count()
+                            cnt_tbls=0
                             for table_name in table_names:
                                 # Construct the fully qualified table name
                                 full_table_name = f'"{source_database}"."{source_schema}"."{table_name}"'
                                 full_table_name=full_table_name.strip("'")
                                 query = f"SELECT * FROM {full_table_name}"
+                                cnt_tbls=cnt_tbls+1;
                                 df = pd.read_sql(query, source_conn)
                                 success, nchunks, nrows, _ = write_pandas(conn=dest_conn, df=df, table_name=table_name, database=dest_database, schema=dest_schema)
                                 st.success(f'Source table: {table_name}  replicated in Destination DB with rows : {nrows}')
                             st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
                             time.sleep(0.5)
                                 
-                            st.success("Data replication successful!")
+                            st.success("Data replication successful 🎉🎉🎉. Total {cnt_tbls}/{total_cnt_tbls} tables replicated.")
                         except Exception as e:
                             st.error(f"Error replicating data: {str(e)}")
 
