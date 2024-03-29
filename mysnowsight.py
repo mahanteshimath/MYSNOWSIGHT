@@ -452,7 +452,7 @@ with tab5:
                             table_names = [table[1] for table in source_tables]
 
                             # Replicate each table from source to destination
-                            total_cnt_tbls=table_names.count()
+                            total_cnt_tbls=len(table_names)
                             cnt_tbls=0
                             for table_name in table_names:
                                 # Construct the fully qualified table name
