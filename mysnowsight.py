@@ -467,7 +467,7 @@ with tab5:
                             st.toast("Data of all source Snowflake created in Destination!", icon='🎉')
                             time.sleep(0.5)
                                 
-                            st.success("Data replication successful 🎉🎉🎉. Total {cnt_tbls}/{total_cnt_tbls} tables replicated.")
+                            st.success(f"Data replication successful 🎉🎉🎉. Total {cnt_tbls}/{total_cnt_tbls} tables replicated.")
                         except Exception as e:
                             st.error(f"Error replicating data: {str(e)}")
 
