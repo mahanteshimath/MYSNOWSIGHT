@@ -214,6 +214,7 @@ with tab3:
                 main()
 with tab4:
             def main():
+                  st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                   st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
                   st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
                   if all([account, role, warehouse, database, schema, user, password]):
@@ -298,6 +299,7 @@ with tab4:
                
 with tab5:
             def main():
+                    st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
                     st.title(":balloon: :balloon: Replicate databse from one snowflake to another :balloon: :balloon:")
                     def test_connection(account, role, warehouse, database, schema, user, password):
                         try:
