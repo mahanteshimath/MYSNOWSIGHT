@@ -452,8 +452,8 @@ with tab5:
                             table_names = [table[1] for table in source_tables]
 
                             # Replicate each table from source to destination
-                            total_cnt_tbls=len(table_names)
-                            st.success("Total Tables to replicate: {total_cnt_tbls}")
+                            total_cnt_tbls = len(table_names)
+                            st.success(f"Total Tables to replicate: {total_cnt_tbls}")
                             cnt_tbls=0
                             for table_name in table_names:
                                 # Construct the fully qualified table name
