@@ -19,7 +19,7 @@ st.set_page_config(
   initial_sidebar_state="expanded",
 ) 
 
-tab1, tab2, tab3 , tab4,tab5 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI", "GENERATE DDL","REPLICATE DATABASE"])
+tab1, tab2, tab3 , tab4,tab5,tab6 = st.tabs(["PARALLEL EXECUTE", "LOAD FILE", "DOCUMENT AI", "GENERATE DDL","REPLICATE DATABASE","TEST DATA GENERATOR"])
 
 # Sidebar for Snowflake credentials
 with st.sidebar:
@@ -493,7 +493,14 @@ with tab5:
             
             
             if __name__ == '__main__':
-                main()                
+                main()
+with tab6:
+            def main():
+                    st.markdown('<p style="color: yellow;">👉🎥 Visit my YouTube channel for more details <a href="https://bit.ly/atozaboutdata">🎥click</a></p>', unsafe_allow_html=True)
+                    st.title(":balloon: :balloon: Test Data Generator :balloon: :balloon:")
+                
+            if __name__ == '__main__':
+                main()              
                 
 # Adding a footer
 footer="""<style>
