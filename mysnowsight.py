@@ -122,7 +122,7 @@ with tab2:
                     # Read the file
                     file_extension = file.name.split('.')[-1]
                     if file_extension.lower() in ['xls', 'xlsx', 'csv', 'txt']:
-                        data = pd.read_excel(file) if file_extension.lower() in ['xls', 'xlsx'] else pd.read_csv(file, encoding='latin-1')
+                        data = pd.read_excel(file) if file_extension.lower() in ['xls', 'xlsx'] else pd.read_csv(file, encoding='utf-8')
 
                         st.subheader('Preview of Uploaded Data')
                         st.write(data.head())
