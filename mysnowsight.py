@@ -71,6 +71,7 @@ with tab1:
                     try:
                         cursor.execute(query)
                         result = cursor.fetchall()
+                        result=pd.DataFrame(result)
                         elapsed_time = time.time() - start_time
                         return result
                     except connection.connector.errors.ProgrammingError as e:
