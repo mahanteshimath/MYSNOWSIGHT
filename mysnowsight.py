@@ -59,8 +59,8 @@ with tab1:
                 # Function to execute queries in parallel
                 def execute_queries(queries):
                     with ThreadPoolExecutor(max_workers=len(queries)) as executor:
-                        results = list(executor.map(execute_single_query, queries))
                         st.success(f"Query: {query} Time taken: {elapsed_time:.2f} seconds")
+                        results = list(executor.map(execute_single_query, queries))
                     return results
 
                 # Function to execute a single query
