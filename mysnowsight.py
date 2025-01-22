@@ -71,9 +71,11 @@ with tab1:
                     try:
                         cursor.execute(query)
                         result = cursor.fetchall()
-                        result=pd.DataFrame(result)
+                        columns = [col[0] for col in cursor.description] 
+                        result_df = pd.DataFrame(result, columns=columns)
+
                         elapsed_time = time.time() - start_time
-                        return result
+                        return result_df
                     except connection.connector.errors.ProgrammingError as e:
                         return f"Query: {query}\nError: {str(e)}\nTime taken: {elapsed_time:.2f} seconds"
                     finally:
