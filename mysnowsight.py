@@ -176,76 +176,77 @@ def main_tab4():
     st.title(":balloon: :balloon: Generate DDL :balloon: :balloon:")
     st.write(":balloon: :balloon: This is to Generate DDL :balloon: :balloon:")
     if all([account, role, warehouse, database, schema, user, password]):
-       
         conn = create_snowflake_connection(account, role, warehouse, database, schema, user, password)
-        cursor = conn.cursor()
-        chk_box = st.selectbox("Do you want to Generate DDL for entire DB?", options=["YES", "NO"], index=1)
+        if conn:
+            cursor = conn.cursor()
+            chk_box = st.selectbox("Do you want to Generate DDL for entire DB?", options=["YES", "NO"], index=1)
 
-        if conn and chk_box == 'NO':
-            st.info('Connected to Snowflake!')
-            db_list = cursor.execute("SHOW DATABASES")
-            db_names = [db[1] for db in db_list]
+            if chk_box == 'NO':
+                st.info('Connected to Snowflake!')
+                db_list = cursor.execute("SHOW DATABASES")
+                db_names = [db[1] for db in db_list]
 
-            db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
 
-            if db_name:
-                sch_list = cursor.execute(f"SHOW SCHEMAS IN DATABASE {db_name}")
-                sch_names = [sch[1] for sch in sch_list]
-                sch_name = st.selectbox("Select Schema", sch_names, index=0, key=f"schemaname_list")
-                if sch_name:
-                    entity_types = [
-                        "Dynamic Table", "Event Table", "File Format", "Function",
-                        "Iceberg Table", "Masking Policy", "Password Policy", "Pipe",
-                        "Procedure", "Row Access Policy", "Sequence", "Session Policy",
-                        "Stream", "Table", "Tag", "Task", "View"
-                    ]
-                    entity_type = st.selectbox("Select Object Type", entity_types)
+                if db_name:
+                    sch_list = cursor.execute(f"SHOW SCHEMAS IN DATABASE {db_name}")
+                    sch_names = [sch[1] for sch in sch_list]
+                    sch_name = st.selectbox("Select Schema", sch_names, index=0, key=f"schemaname_list")
+                    if sch_name:
+                        entity_types = [
+                            "Dynamic Table", "Event Table", "File Format", "Function",
+                            "Iceberg Table", "Masking Policy", "Password Policy", "Pipe",
+                            "Procedure", "Row Access Policy", "Sequence", "Session Policy",
+                            "Stream", "Table", "Tag", "Task", "View"
+                        ]
+                        entity_type = st.selectbox("Select Object Type", entity_types)
 
-                    if entity_type:
-                        if entity_type in ['Function', 'Procedure']:
-                            ent_list = cursor.execute(f"SHOW USER {entity_type}S IN SCHEMA {db_name}.{sch_name}")
-                            ent_names = [ent[8] for ent in ent_list]
-                        else:
-                            ent_list = cursor.execute(f"SHOW {re.sub('Policy', 'Policie', entity_type)}S IN SCHEMA {db_name}.{sch_name}")
-                            ent_names = [ent[1] for ent in ent_list]
-
-                        selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
-                        if selected_entities:
-                            if 'Policy' in entity_type:
-                                ent_type = 'Policy'
+                        if entity_type:
+                            if entity_type in ['Function', 'Procedure']:
+                                ent_list = cursor.execute(f"SHOW USER {entity_type}S IN SCHEMA {db_name}.{sch_name}")
+                                ent_names = [ent[8] for ent in ent_list]
                             else:
-                                ent_type = re.sub(" ", "_", entity_type)
-                            if st.button('Generate DDL'):
-                                ddl_statements = []
-                                for entity_name in selected_entities:
-                                    ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
-                                    ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
-                                    df = cursor.execute(ddl_query)
-                                    ddl_statements.append(df.fetchone()[0])
+                                ent_list = cursor.execute(f"SHOW {re.sub('Policy', 'Policie', entity_type)}S IN SCHEMA {db_name}.{sch_name}")
+                                ent_names = [ent[1] for ent in ent_list]
 
-                                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                                st.write("### Generate DDL")
-                                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                                st.code(combined_ddl, language=language)
+                            selected_entities = st.multiselect(f"Select {entity_type}s", ent_names, key=f"selected_entity_list")
+                            if selected_entities:
+                                if 'Policy' in entity_type:
+                                    ent_type = 'Policy'
+                                else:
+                                    ent_type = re.sub(" ", "_", entity_type)
+                                if st.button('Generate DDL'):
+                                    ddl_statements = []
+                                    for entity_name in selected_entities:
+                                        ent_name = re.sub("(.*?) RETURN.*", "\\1", entity_name)
+                                        ddl_query = f"SELECT GET_DDL('{ent_type}', '{db_name}.{sch_name}.{ent_name}', true) AS DDL"
+                                        df = cursor.execute(ddl_query)
+                                        ddl_statements.append(df.fetchone()[0])
 
-        if conn and chk_box == 'YES':
-            st.info('Connected to Snowflake!')
-            db_list = cursor.execute("SHOW DATABASES")
-            db_names = [db[1] for db in db_list]
+                                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                                    st.write("### Generate DDL")
+                                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                                    st.code(combined_ddl, language=language)
 
-            db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
+            if chk_box == 'YES':
+                st.info('Connected to Snowflake!')
+                db_list = cursor.execute("SHOW DATABASES")
+                db_names = [db[1] for db in db_list]
 
-            if db_name and st.button('Generate DDL'):
-                ddl_statements = []
-                ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
-                df = cursor.execute(ddl_query)
-                ddl_statements.append(df.fetchone()[0])
-                combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
-                st.write("### Generate DDL")
-                language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
-                st.code(combined_ddl, language=language)
+                db_name = st.selectbox("Select Database", db_names, key=f"selected_dbnames")
 
-        cursor.close()
+                if db_name and st.button('Generate DDL'):
+                    ddl_statements = []
+                    ddl_query = f"SELECT GET_DDL('DATABASE', '{db_name}', true) AS DDL"
+                    df = cursor.execute(ddl_query)
+                    ddl_statements.append(df.fetchone()[0])
+                    combined_ddl = "\n\n-------------------------------------------------------------------------------------------\n\n".join(ddl_statements)
+                    st.write("### Generate DDL")
+                    language = "PYTHON" if "python" in combined_ddl.lower() else "SQL"
+                    st.code(combined_ddl, language=language)
+
+            cursor.close()
+            conn.close()
 
 # Main function for tab5
 def main_tab5():
