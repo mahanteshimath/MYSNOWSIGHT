@@ -60,6 +60,7 @@ with tab1:
                 def execute_queries(queries):
                     with ThreadPoolExecutor(max_workers=len(queries)) as executor:
                         results = list(executor.map(execute_single_query, queries))
+                        st.success(f"Query: {query} Time taken: {elapsed_time:.2f} seconds")
                     return results
 
                 # Function to execute a single query
