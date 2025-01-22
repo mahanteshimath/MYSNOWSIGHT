@@ -72,7 +72,7 @@ with tab1:
                         cursor.execute(query)
                         result = cursor.fetchall()
                         elapsed_time = time.time() - start_time
-                        return f"Query: {query}\nResult: {result}\nTime taken: {elapsed_time:.2f} seconds"
+                        return result
                     except connection.connector.errors.ProgrammingError as e:
                         return f"Query: {query}\nError: {str(e)}\nTime taken: {elapsed_time:.2f} seconds"
                     finally:
