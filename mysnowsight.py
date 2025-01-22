@@ -75,7 +75,7 @@ with tab1:
                         conn.close()
                         result_df = pd.DataFrame(result, columns=columns)
                         elapsed_time = time.time() - start_time
-                        print(f"Query: {query}  Time taken: {elapsed_time:.2f} seconds")
+                        ##print(f"Query: {query}  Time taken: {elapsed_time:.2f} seconds")
                         return result_df
                         #return f"Query: {query}\nResult: {result}\nTime taken: {elapsed_time:.2f} seconds"
                     except connection.connector.errors.ProgrammingError as e:
