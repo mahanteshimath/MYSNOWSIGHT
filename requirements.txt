@@ -8,4 +8,4 @@ PyPDF2
 chromadb
 faiss-cpu
 dlt
-snowflake-connector-python==2.7.9
+snowflake-connector-python
